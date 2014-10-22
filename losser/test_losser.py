@@ -228,6 +228,10 @@ def test_table():
         {"Title": "dataset three", "Update Frequency": "weekly"},
     ]
 
+
+# TODO: Test table when input dicts have different keys. Output dicts should
+# all have the same keys (one key for each input column).
+
 def test_append_unused_keys():
     """Test the append_unused_keys option.
 
@@ -327,6 +331,7 @@ def test_blacklist():
             assert key not in row
 
 
+# TODO: Move this test to losser.query() tests.
 def test_max_length():
     """Test the max_length option."""
     max_length = 5
