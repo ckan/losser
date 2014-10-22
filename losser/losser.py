@@ -1,13 +1,38 @@
+"""Filter, transform and export a list of JSON objects to CSV.
+
+A list of objects (as JSON text) is read from stdin, filtered and transformed,
+and the resulting table is written to stdout as CSV text.
+(TODO: Also support CSV input and JSON output.)
+
+A JSON file specifying the columns to output (and how to extract the values
+for the columns from the input data) must be provided as a --columns argument.
+
+Example usage:
+
+    losser --columns columns.json < input.json > output.csv
+
+This will:
+
+1. Read data from input.json
+2. Transform and filter it according to the columns specified in columns.json
+3. Write the result as UTF8-encoded, CSV-formatted text to output.csv
+
+"""
 import re
 import collections
 import sys
+import unicodecsv
+import argparse
+import cStringIO
+import traceback
+import json
 
 
 class UniqueError(Exception):
     pass
 
 
-def table(dicts, columns):
+def table(dicts, columns, csv=False):
     """Query a list of dicts with a list of queries and return a table.
 
     A "table" is a list of OrderedDicts each having the same keys in the same
@@ -20,7 +45,33 @@ def table(dicts, columns):
         for column_title, column_spec in columns.items():
             row[column_title] = query(dict_=d, **column_spec)
         table_.append(row)
-    return table_
+
+    if csv:
+        # Return a UTF8-encoded, CSV-formatted string instead of a list of
+        # dicts.
+        f = cStringIO.StringIO()
+        try:
+            _write_csv(f, table_)
+            return f.getvalue()
+        finally:
+            f.close()
+    else:
+        return table_
+
+
+def _write_csv(f, table):
+    """Write the given table (list of dicts) to the given file as CSV.
+
+    Writes UTF8-encoded, CSV-formatted text.
+
+    ``f`` could be an opened file, sys.stdout, or a StringIO.
+
+    """
+    # We assume that each dict in the list has the same keys.
+    fieldnames = table[0].keys()
+    writer = unicodecsv.DictWriter(f, fieldnames, encoding='utf-8')
+    writer.writeheader()
+    writer.writerows(table)
 
 
 def query(pattern_path, dict_, max_length=None, strip=False,
@@ -134,9 +185,56 @@ def _process_dict(pattern_path, dict_, case_sensitive=False, **kwargs):
     return result
 
 
-def main():
-    # TODO: Support running from command-line.
-    sys.exit("Command-line interface not implemented yet.")
+def main(args=None):
+    # This should:
+    # - Read input data from stdin (JSON, also support CSV?)
+    # - Print output data to stdout (CSV, JSON lines)
+    # - Print errors and diagnostics to stderr, not stdout
+    # - Exit with meaningful exit status
+
+    if args is None:
+        args = sys.argv[1:]
+
+    # Parse the command-line arguments.
+    parser = argparse.ArgumentParser(
+        description="Filter, transform and export a list of JSON objects on "
+                    "stdin to JSON or CSV on stdout",
+    )
+    parser.add_argument(
+        "--columns",
+        help="the JSON file specifying the columns to be output",
+        required=True,
+    )
+    parser.add_argument(
+        "-i", "--input",
+        help="read input from the given file instead of from stdin",
+        dest='input_data',  # Because input is a Python builtin.
+    )
+    parsed_args = parser.parse_args(args)
+
+    # Read the input data from stdin or a file.
+    if parsed_args.input_data:
+        input_data = open(parsed_args.input_data, 'r').read()
+    else:
+        input_data = sys.stdin.read()
+
+    # Read the JSON file specifying the columns.
+    try:
+        columns = json.loads(open(parsed_args.columns, 'r').read(),
+                             object_pairs_hook=collections.OrderedDict)
+    except Exception:
+        traceback.print_exc()
+        raise Exception("There was an error while reading {0}".format(
+            parsed_args.columns))
+
+    # Options are not supported yet:
+    if '__options' in columns:
+        del columns['__options']
+
+    dicts = json.loads(input_data)
+
+    csv_string = table(dicts, columns, csv=True)
+    sys.stdout.write(csv_string)
 
 
 if __name__ == "__main__":
