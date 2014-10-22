@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/ckan/losser.svg)](https://travis-ci.org/ckan/losser)
 [![Coverage Status](https://img.shields.io/coveralls/ckan/losser.svg)](https://coveralls.io/r/ckan/losser)
+[![PyPI version](https://badge.fury.io/py/losser.svg)](http://badge.fury.io/py/losser)
 
 
 Losser
