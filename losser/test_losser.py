@@ -197,7 +197,7 @@ def test_unique():
                              unique=True)
 
 
-def test_unique():
+def test_deduplicate():
     """Test the deduplicate option."""
     d = collections.OrderedDict(
         title="my dataset",
