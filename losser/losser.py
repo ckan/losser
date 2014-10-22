@@ -1,5 +1,6 @@
 import re
 import collections
+import sys
 
 
 class UniqueError(Exception):
@@ -131,3 +132,12 @@ def _process_dict(pattern_path, dict_, case_sensitive=False, **kwargs):
                                           case_sensitive=case_sensitive,
                                           **kwargs))
     return result
+
+
+def main():
+    # TODO: Support running from command-line.
+    sys.exit("Command-line interface not implemented yet.")
+
+
+if __name__ == "__main__":
+    main()
