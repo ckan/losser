@@ -26,6 +26,7 @@ import argparse
 import cStringIO
 import traceback
 import json
+import pprint
 
 
 class UniqueError(Exception):
@@ -39,6 +40,10 @@ def table(dicts, columns, csv=False):
     order.
 
     """
+    # Optionally read columns from file.
+    if isinstance(columns, basestring):
+        columns = read_columns_file(columns)
+
     table_ = []
     for d in dicts:
         row = collections.OrderedDict()  # The row we'll return in the table.
@@ -71,12 +76,19 @@ def _write_csv(f, table):
     fieldnames = table[0].keys()
     writer = unicodecsv.DictWriter(f, fieldnames, encoding='utf-8')
     writer.writeheader()
+
+    # Change lists into comma-separated strings.
+    for dict_ in table:
+        for key, value in dict_.items():
+            if type(value) in (list, tuple):
+                dict_[key] = ', '.join(value)
+
     writer.writerows(table)
 
 
 def query(pattern_path, dict_, max_length=None, strip=False,
           case_sensitive=False, unique=False, deduplicate=False,
-          string_transformations=None):
+          string_transformations=None, hyperlink=False):
     """Query the given dict with the given pattern path and return the result.
 
     The ``pattern_path`` is a either a single regular expression string or a
@@ -101,11 +113,16 @@ def query(pattern_path, dict_, max_length=None, strip=False,
     if max_length:
         string_transformations.append(lambda x: x[:max_length])
 
+    if hyperlink:
+        string_transformations.append(
+                lambda x: '=HYPERLINK("{0}")'.format(x))
+
     if isinstance(pattern_path, basestring):
         pattern_path = [pattern_path]
 
     # Copy the pattern_path because we're going to modify it which can be
     # unexpected and confusing to user code.
+    original_pattern_path = pattern_path
     pattern_path = pattern_path[:]
 
     # We're going to be popping strings off the end of the pattern path
@@ -123,7 +140,9 @@ def query(pattern_path, dict_, max_length=None, strip=False,
         return result[0]  # One-item lists just get turned into the item.
     else:
         if unique:
-            raise UniqueError(pattern_path, dict_)
+            msg = "pattern_path: {0}\n\n".format(original_pattern_path)
+            msg = msg + pprint.pformat(dict_)
+            raise UniqueError(msg)
         if deduplicate:
             # Deduplicate the list while maintaining order.
             new_result = []
@@ -185,6 +204,22 @@ def _process_dict(pattern_path, dict_, case_sensitive=False, **kwargs):
     return result
 
 
+def read_columns_file(f):
+    """Read the JSON file specifying the columns."""
+    try:
+        columns = json.loads(open(f, 'r').read(),
+                             object_pairs_hook=collections.OrderedDict)
+    except Exception:
+        traceback.print_exc()
+        raise Exception("There was an error while reading {0}".format(f))
+
+    # Options are not supported yet:
+    if '__options' in columns:
+        del columns['__options']
+
+    return columns
+
+
 def main(args=None):
     # This should:
     # - Read input data from stdin (JSON, also support CSV?)
@@ -218,22 +253,9 @@ def main(args=None):
     else:
         input_data = sys.stdin.read()
 
-    # Read the JSON file specifying the columns.
-    try:
-        columns = json.loads(open(parsed_args.columns, 'r').read(),
-                             object_pairs_hook=collections.OrderedDict)
-    except Exception:
-        traceback.print_exc()
-        raise Exception("There was an error while reading {0}".format(
-            parsed_args.columns))
-
-    # Options are not supported yet:
-    if '__options' in columns:
-        del columns['__options']
-
     dicts = json.loads(input_data)
 
-    csv_string = table(dicts, columns, csv=True)
+    csv_string = table(dicts, parsed_args.columns, csv=True)
     sys.stdout.write(csv_string)
 
 
