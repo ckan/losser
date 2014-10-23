@@ -211,7 +211,7 @@ Some of the filtering and transformations you can do with losser include:
       }
 
   The pattern `"^Contributor.*"` will match all three fields and the value in
-  the CSV cell will be `"Thom Yorke,Nigel Godrich,Jonny Greenwood"`'.
+  the CSV cell will be `"Thom Yorke,Nigel Godrich,Jonny Greenwood"`.
 
 * You can specify that a pattern path should find a unique value in the object,
   and if more than one value in the object matches the pattern (and a list
