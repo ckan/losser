@@ -144,8 +144,7 @@ example). These are flattened in the output cells.
 
 Some of the filtering and transformations you can do with losser include:
 
-* Extract some fields from the objects (by matching regular expression
-  patterns) and filter out others.
+* Extract some fields from the objects and filter out others.
 
   Any fields in an input object that do not match any of the pattern paths in
   the `columns.json` file are filtered out.
@@ -169,7 +168,6 @@ Some of the filtering and transformations you can do with losser include:
       "Description": {
         "pattern_path": "^notes$",
       }
-
 
 * Match patterns case-sensitively.
 
@@ -197,6 +195,23 @@ Some of the filtering and transformations you can do with losser include:
   For example you can provide a pattern like `"^update.*"` that will find keys
   named "update", "Update", "Update Frequency" etc. in different input objects
   and collect their values in a single "Update Frequency" column.
+
+* Collect multiple fields together in a single column.
+
+  If a pattern matches multiple fields they'll be output as a quoted
+  comma-separated list in a single cell in the CSV.
+
+  For example with an input object like this:
+
+      {
+        "Contributor 1": "Thom Yorke",
+        "Contributor 2": "Nigel Godrich",
+        "Contributor 3": "Jonny Greenwood",
+        ...
+      }
+
+  The pattern `"^Contributor.*"` will match all three fields and the value in
+  the CSV cell will be `"Thom Yorke,Nigel Godrich,Jonny Greenwood"`'.
 
 * You can specify that a pattern path should find a unique value in the object,
   and if more than one value in the object matches the pattern (and a list
