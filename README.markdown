@@ -9,12 +9,12 @@ Losser
 A little UNIX command and Python library for lossy filter, transform, and
 export of JSON to Excel-compatible CSV.
 
-Losser can be run either as a UNIX command or used as Python library
+Losser can either be run as a UNIX command or used as a Python library
 (see [Usage](#usage) below). It takes a JSON-formatted list of objects
 (or a list of Python dicts) as input and produces a "table" as output.
 
-The input objects do not all have to have the same keys as each other, and may
-contain sub-lists and sub-objects arbitrarily nested.
+The input objects don't all have to have the same fields or structure as each
+other, and may contain sub-lists and sub-objects arbitrarily nested.
 
 The output "table" is a list of objects that all have the same keys in the same
 order, and with sub-objects and sub-lists nested no more than one level deep.
@@ -25,8 +25,9 @@ It can be output as:
   the same keys in the same order
   ([TODO](https://github.com/ckan/losser/issues/3))
 * A string of CSV-formatted text, one object per CSV row. The rows of the CSV
-  correspond to the objects in the list of objects, and the columns correspond
-  to the object's keys.
+  correspond to the objects in the list of output objects if they had been
+  returned as Python or JSON Data, and the columns correspond to the objects'
+  keys.
 
 The input objects can be filtered and transformed before producing the output
 table. You provide a list of "column query" objects in a `columns.json` file
@@ -96,22 +97,22 @@ Losser queries an input object with a pattern path as follows:
 
 1. Any pre-processor functions are applied to the input object.
 2. Each column query in the `columns.json` file is applied to the input object
-   in turn to produce the values for the corresponding row in the output table.
+   in turn to produce the values for the object's row in the output table.
    For each column query:
-   1. When it hits an object/dictionary (either the top-level input object
+   1. When it hits an *object/dictionary* (either the top-level input object
       itself or a sub-object) losser pops the next regular expression off the
       pattern path, matches it against each of the object's keys, and recurses
       on each key that matches.
-   2. When it hits a list losser iterates over the items in the list recursing
-      on each of them and collecting the results into a list.
+   2. When it hits a *list* losser iterates over the items in the list recursing
+      on each of them and collecting the results into an output list.
    3. When it hits a string, number, boolean or `None`/`null` value the
       recursion bottoms-out and returns the value.
-5. Once all of the column queries have been run on the input object and the
+3. Once all of the column queries have been run on the input object and the
    results collected, any post-processor functions are called on the output
    object.
 
 A pattern may match more than one key in an object, in which case each one of
-the matching keys' item's will be recursed into, and a list of matching values
+the matching keys' items will be recursed into, and a list of matching values
 will eventually be returned instead of a single value. For example given this
 input object:
 
@@ -122,7 +123,7 @@ input object:
 
 The pattern path `"^update.*"` (which matches both "update" and "update
 frequency") would output `"yearly, monthly"` (a quoted, comma-separated list)
-in the corresponding cell in the output table.
+in the corresponding cell in the CSV output.
 
 This also happens when a pattern path matches a single field in the input
 object and the field's value is a list.
@@ -170,6 +171,8 @@ Some of the filtering and transformations you can do with losser include:
         "case_sensitive": true
       },
 
+  This will match "title" in the input object, but not "Title" or "TITLE".
+
 * Transform the matched values, for example truncating or stripping whitespace
   from strings.
 
@@ -180,17 +183,9 @@ Some of the filtering and transformations you can do with losser include:
 * Find inconsistently-named fields using a pattern that matches any of the
   names and combine them into a single column in the output table.
 
-  For example you can provide a pattern like "^update.*" that will find keys
+  For example you can provide a pattern like `"^update.*"` that will find keys
   named "update", "Update", "Update Frequency" etc. in different input objects
   and collect their values in a single "Update Frequency" column.
-
-* Recurse into sub-objects and extract fields from the sub-objects, promoting
-  them to top-level keys in the output table.
-
-  This is done using "pattern paths", ordered lists of regexes. For example
-  the pattern path ["^resources$"]["^format$"] will find the values of the
-  "format" fields of the "resources" sub-objects in each of the list of input
-  objects.
 
 * You can specify that a pattern path should find a unique value in the object,
   and if more than one value in the object matches the pattern (and a list
