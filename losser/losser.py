@@ -35,7 +35,7 @@ def table(dicts, columns, csv=False):
     """
     # Optionally read columns from file.
     if isinstance(columns, basestring):
-        columns = read_columns_file(columns)
+        columns = _read_columns_file(columns)
 
     table_ = []
     for d in dicts:
@@ -193,7 +193,7 @@ def _process_dict(pattern_path, dict_, case_sensitive=False, **kwargs):
     return result
 
 
-def read_columns_file(f):
+def _read_columns_file(f):
     """Read the JSON file specifying the columns."""
     try:
         columns = json.loads(open(f, 'r').read(),
