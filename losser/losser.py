@@ -1,23 +1,3 @@
-"""Filter, transform and export a list of JSON objects to CSV.
-
-A list of objects (as JSON text) is read from stdin, filtered and transformed,
-and the resulting table is written to stdout as CSV text.
-(TODO: Also support CSV input and JSON output.)
-
-A JSON file specifying the columns to output (and how to extract the values
-for the columns from the input data) must be provided as a --columns argument.
-
-Example usage:
-
-    losser --columns columns.json < input.json > output.csv
-
-This will:
-
-1. Read data from input.json
-2. Transform and filter it according to the columns specified in columns.json
-3. Write the result as UTF8-encoded, CSV-formatted text to output.csv
-
-"""
 import re
 import collections
 import sys
@@ -38,6 +18,19 @@ def table(dicts, columns, csv=False):
 
     A "table" is a list of OrderedDicts each having the same keys in the same
     order.
+
+    :param dicts: the list of input dicts
+    :type dicts: list of dicts
+
+    :param columns: the list of column query dicts, or the path to a JSON file
+        containing the list of column query dicts
+    :type columns: list of dicts, or string
+
+    :param csv: return a UTF8-encoded, CSV-formatted string instead of a list
+        of dicts
+    :type csv: bool
+
+    :rtype: list of dicts, or CSV string
 
     """
     # Optionally read columns from file.
@@ -101,10 +94,6 @@ def query(pattern_path, dict_, max_length=None, strip=False,
 
     If the dict contains sub-lists or sub-dicts values from these will be
     flattened into a simple flat list to be returned.
-
-    # FIXME: If the pattern path doesn't match the keys in the dict then None
-    # is returned, which is indistinguishable from if it matched a path to a
-    # key whose value was None. Raise an UnmatchedPathError instead.
 
     """
     if string_transformations is None:
