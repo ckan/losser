@@ -8,12 +8,11 @@ Losser
 
 A little UNIX command and Python library for lossy filter, transform, and
 export of JSON to Excel-compatible CSV.
+Created for [ckanapi-exporter](https://github.com/ckan/ckanapi-exporter).
 
 Losser can either be run as a UNIX command or used as a Python library
 (see [Usage](#usage) below). It takes a JSON-formatted list of objects
 (or a list of Python dicts) as input and produces a "table" as output.
-
-Losser was created for [ckanapi-exporter](https://github.com/ckan/ckanapi-exporter).
 
 The input objects don't all have to have the same fields or structure as each
 other, and may contain sub-lists and sub-objects arbitrarily nested.
