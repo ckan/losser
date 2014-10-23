@@ -13,6 +13,8 @@ Losser can either be run as a UNIX command or used as a Python library
 (see [Usage](#usage) below). It takes a JSON-formatted list of objects
 (or a list of Python dicts) as input and produces a "table" as output.
 
+Losser was created for [ckanapi-exporter](https://github.com/ckan/ckanapi-exporter).
+
 The input objects don't all have to have the same fields or structure as each
 other, and may contain sub-lists and sub-objects arbitrarily nested.
 
@@ -93,40 +95,25 @@ will find and return the value for the "Delivery Unit" key in the sub-object.
 Pattern paths can be arbitrarily long, recursing into arbitrarily deeply nested
 sub-objects.
 
-Losser queries an input object with a pattern path as follows:
+One of the patterns in a pattern path may match multiple keys in an object or
+sub-object. In that case losser recurses on each of the matched keys and ends
+up returning a list of values instead of a single value.
 
-1. Any pre-processor functions are applied to the input object.
-2. Each column query in the `columns.json` file is applied to the input object
-   in turn to produce the values for the object's row in the output table.
-   For each column query:
-   1. When it hits an *object/dictionary* (either the top-level input object
-      itself or a sub-object) losser pops the next regular expression off the
-      pattern path, matches it against each of the object's keys, and recurses
-      on each key that matches.
-   2. When it hits a *list* losser iterates over the items in the list recursing
-      on each of them and collecting the results into an output list.
-   3. When it hits a string, number, boolean or `None`/`null` value the
-      recursion bottoms-out and returns the value.
-3. Once all of the column queries have been run on the input object and the
-   results collected, any post-processor functions are called on the output
-   object.
-
-A pattern may match more than one key in an object, in which case each one of
-the matching keys' items will be recursed into, and a list of matching values
-will eventually be returned instead of a single value. For example given this
-input object:
+For example given this input object:
 
     {
       "update": "yearly",
-      "update frequency": "monthly"
+      "update frequency": "monthly",
+      ...
     }
 
 The pattern path `"^update.*"` (which matches both "update" and "update
 frequency") would output `"yearly, monthly"` (a quoted, comma-separated list)
 in the corresponding cell in the CSV output.
 
-This also happens when a pattern path matches a single field in the input
-object and the field's value is a list.
+If a pattern path goes through a sub-list in the input dict losser will iterate
+over the list and recurse on each of its items. Again it will end up returning
+a list of values instead of a single value.
 
 Nested lists can occur (when the input object contains a list of lists, for
 example). These are flattened and optionally deduplicated in the output cells.
