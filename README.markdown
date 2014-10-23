@@ -81,7 +81,7 @@ The values for each column are retrieved from the input objects by following a
 "pattern path": a list of regular expressions that are matched against the keys
 of the input object and its sub-objects in turn to find a value.
 
-For example the "Data Owner" field above has the pattern path "^author$" which
+For example the "Data Owner" field above has the pattern path `"^author$"` which
 matches the string "author". This will find top-level keys named "author" in
 the input objects and output their values in the "Data Owner" column of the
 output table.
@@ -114,8 +114,33 @@ If a pattern path goes through a sub-list in the input dict losser will iterate
 over the list and recurse on each of its items. Again it will end up returning
 a list of values instead of a single value.
 
+For example, given a list of input objects like this:
+
+    [
+      {
+        "resources": [
+          {
+            "format": "CSV",
+            ...
+          },
+          {
+            "format": "JSON",
+            ...
+          },
+          ...
+        ],
+        ...
+      },
+      ...
+    ]
+
+The pattern path `["^resources$", "^format$"]` will find each object's
+"resources" sub-list and then find the "format" field in each object in the
+sub-list. The values in the CSV column will be lists like `"CSV, JSON"`.
+List can optionally be deduplicated.
+
 Nested lists can occur (when the input object contains a list of lists, for
-example). These are flattened and optionally deduplicated in the output cells.
+example). These are flattened in the output cells.
 
 Some of the filtering and transformations you can do with losser include:
 
