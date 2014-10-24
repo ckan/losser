@@ -235,9 +235,6 @@ def main(args=None):
     # - Print errors and diagnostics to stderr, not stdout
     # - Exit with meaningful exit status
 
-    if args is None:
-        args = sys.argv[1:]
-
     # Parse the command-line arguments.
     parser = argparse.ArgumentParser(
         description="Filter, transform and export a list of JSON objects on "
