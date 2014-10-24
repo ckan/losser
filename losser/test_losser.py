@@ -421,21 +421,42 @@ def test_table_with_invalid_columns_file():
 def test_returning_csv():
     """Test table() returning a CSV string."""
     rows = [
-        dict(title="dataset one", extras=dict(update="hourly")),
-        dict(title="dataset two", extras=dict(Updated="daily")),
-        dict(title="dataset three", extras={"Update Frequency": "weekly"}),
+        {
+            "author": "Guybrush Threepwood",
+            "notes": "Test row 1",
+            "resources": [
+                {"format": "CSV"},
+                {"format": "JSON"},
+            ],
+        },
+        {
+            "author": "LeChuck",
+            "notes": "Test row 2",
+            "resources": [
+                {"format": "XLS"},
+                {"format": "XLS"},
+            ],
+        },
+        {
+            "author": "Herman Toothrot",
+            "notes": "Test row 3",
+            "resources": [
+                {"format": "PDF"},
+                {"format": "TXT"},
+            ],
+        },
     ]
     columns = collections.OrderedDict()
-    columns["Title"] = dict(pattern_path="^title$")
-    columns["Update Frequency"] = dict(pattern_path=["^extras$", "update"])
+    columns["Author"] = dict(pattern_path="^author$")
+    columns["Formats"] = dict(pattern_path=["^resources$", "^format$"])
 
     csv_string = losser.table(rows, columns, csv=True)
 
     assert csv_string == (
-        "Title,Update Frequency\r\n"
-        "dataset one,hourly\r\n"
-        "dataset two,daily\r\n"
-        "dataset three,weekly\r\n"
+        "Author,Formats\r\n"
+        'Guybrush Threepwood,"CSV, JSON"\r\n'
+        'LeChuck,"XLS, XLS"\r\n'
+        'Herman Toothrot,"PDF, TXT"\r\n'
     )
 
 
