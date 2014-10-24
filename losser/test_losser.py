@@ -437,3 +437,12 @@ def test_returning_csv():
         "dataset two,daily\r\n"
         "dataset three,weekly\r\n"
     )
+
+
+def test_that_options_are_not_supported_yet():
+    """The __options dict in columns.json is not supported yet."""
+    path = os.path.join(_this_directory(), "test_columns.json")
+    columns = losser._read_columns_file(path)
+    assert '__options' not in columns, (
+        "'__options' should be filtered out of columns.json files because it "
+        "isn't supported yet.")

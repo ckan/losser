@@ -1,4 +1,8 @@
 {
+  "__options": {
+    "append_unmatched_keys": true,
+    "blacklist": ["author", "notes"]
+  },
   "Data Owner": {
       "pattern_path": "^author$",
       "unique": true,
