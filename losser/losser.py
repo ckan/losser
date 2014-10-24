@@ -228,12 +228,10 @@ def _process_dict(pattern_path, dict_, case_sensitive=False, **kwargs):
     return result
 
 
-def main(args=None):
-    # This should:
-    # - Read input data from stdin (JSON, also support CSV?)
-    # - Print output data to stdout (CSV, JSON lines)
-    # - Print errors and diagnostics to stderr, not stdout
-    # - Exit with meaningful exit status
+def main(args=None, table_function=None):
+
+    if table_function is None:
+        table_function = table
 
     # Parse the command-line arguments.
     parser = argparse.ArgumentParser(
@@ -260,7 +258,7 @@ def main(args=None):
 
     dicts = json.loads(input_data)
 
-    csv_string = table(dicts, parsed_args.columns, csv=True)
+    csv_string = table_function(dicts, parsed_args.columns, csv=True)
     sys.stdout.write(csv_string)
 
 
