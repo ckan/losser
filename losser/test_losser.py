@@ -408,6 +408,16 @@ def test_table_from_file():
     ]
 
 
+def test_table_with_invalid_columns_file():
+    """table() should raise an exception if given an invalid columns.json file.
+
+    """
+    path = os.path.join(_this_directory(), "test_invalid_columns.json")
+
+    nose.tools.assert_raises(losser.InvalidColumnsFileError, losser.table,
+                             [], path)
+
+
 def test_returning_csv():
     """Test table() returning a CSV string."""
     rows = [

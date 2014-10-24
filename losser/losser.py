@@ -4,12 +4,16 @@ import sys
 import unicodecsv
 import argparse
 import cStringIO
-import traceback
 import json
 import pprint
 
 
 class UniqueError(Exception):
+    pass
+
+
+class InvalidColumnsFileError(Exception):
+    """Exception raised when reading a columns.json file fails."""
     pass
 
 
@@ -25,9 +29,9 @@ def _read_columns_file(f):
     try:
         columns = json.loads(open(f, 'r').read(),
                              object_pairs_hook=collections.OrderedDict)
-    except Exception:
-        traceback.print_exc()
-        raise Exception("There was an error while reading {0}".format(f))
+    except Exception as err:
+        raise InvalidColumnsFileError(
+            "There was an error while reading {0}: {1}".format(f, err))
 
     # Options are not supported yet:
     if '__options' in columns:
