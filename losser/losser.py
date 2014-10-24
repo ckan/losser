@@ -261,5 +261,4 @@ def main(args=None, table_function=None):
     sys.stdout.write(csv_string)
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == "__main__": main()
