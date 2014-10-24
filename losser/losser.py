@@ -13,6 +13,29 @@ class UniqueError(Exception):
     pass
 
 
+def _read_columns_file(f):
+    """Return the list of column queries read from the given JSON file.
+
+    :param f: path to the file to read
+    :type f: string
+
+    :rtype: list of dicts
+
+    """
+    try:
+        columns = json.loads(open(f, 'r').read(),
+                             object_pairs_hook=collections.OrderedDict)
+    except Exception:
+        traceback.print_exc()
+        raise Exception("There was an error while reading {0}".format(f))
+
+    # Options are not supported yet:
+    if '__options' in columns:
+        del columns['__options']
+
+    return columns
+
+
 def table(dicts, columns, csv=False):
     """Query a list of dicts with a list of queries and return a table.
 
@@ -191,22 +214,6 @@ def _process_dict(pattern_path, dict_, case_sensitive=False, **kwargs):
                                           case_sensitive=case_sensitive,
                                           **kwargs))
     return result
-
-
-def _read_columns_file(f):
-    """Read the JSON file specifying the columns."""
-    try:
-        columns = json.loads(open(f, 'r').read(),
-                             object_pairs_hook=collections.OrderedDict)
-    except Exception:
-        traceback.print_exc()
-        raise Exception("There was an error while reading {0}".format(f))
-
-    # Options are not supported yet:
-    if '__options' in columns:
-        del columns['__options']
-
-    return columns
 
 
 def main(args=None):
