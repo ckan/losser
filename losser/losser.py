@@ -230,8 +230,7 @@ def _process_dict(pattern_path, dict_, case_sensitive=False, **kwargs):
 
 def main(args=None, table_function=None):
 
-    if table_function is None:
-        table_function = table
+    table_function = table_function or table
 
     # Parse the command-line arguments.
     parser = argparse.ArgumentParser(
