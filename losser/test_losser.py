@@ -406,3 +406,24 @@ def test_table_from_file():
             "Formats": ["PDF", "TXT"],
         },
     ]
+
+
+def test_returning_csv():
+    """Test table() returning a CSV string."""
+    rows = [
+        dict(title="dataset one", extras=dict(update="hourly")),
+        dict(title="dataset two", extras=dict(Updated="daily")),
+        dict(title="dataset three", extras={"Update Frequency": "weekly"}),
+    ]
+    columns = collections.OrderedDict()
+    columns["Title"] = dict(pattern_path="^title$")
+    columns["Update Frequency"] = dict(pattern_path=["^extras$", "update"])
+
+    csv_string = losser.table(rows, columns, csv=True)
+
+    assert csv_string == (
+        "Title,Update Frequency\r\n"
+        "dataset one,hourly\r\n"
+        "dataset two,daily\r\n"
+        "dataset three,weekly\r\n"
+    )

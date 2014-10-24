@@ -36,6 +36,46 @@ def _read_columns_file(f):
     return columns
 
 
+def _write_csv(f, table_):
+    """Write the given table (list of dicts) to the given file as CSV.
+
+    Writes UTF8-encoded, CSV-formatted text.
+
+    ``f`` could be an opened file, sys.stdout, or a StringIO.
+
+    """
+    # We assume that each dict in the list has the same keys.
+    fieldnames = table_[0].keys()
+    writer = unicodecsv.DictWriter(f, fieldnames, encoding='utf-8')
+    writer.writeheader()
+
+    # Change lists into comma-separated strings.
+    for dict_ in table_:
+        for key, value in dict_.items():
+            if type(value) in (list, tuple):
+                dict_[key] = ', '.join(value)
+
+    writer.writerows(table_)
+
+
+def _table_to_csv(table_):
+    """Return the given table converted to a CSV string.
+
+    :param table: the table to convert
+    :type table: list of OrderedDicts each with the same keys in the same
+        order
+
+    :rtype: UTF8-encoded, CSV-formatted string
+
+    """
+    f = cStringIO.StringIO()
+    try:
+        _write_csv(f, table_)
+        return f.getvalue()
+    finally:
+        f.close()
+
+
 def table(dicts, columns, csv=False):
     """Query a list of dicts with a list of queries and return a table.
 
@@ -68,38 +108,9 @@ def table(dicts, columns, csv=False):
         table_.append(row)
 
     if csv:
-        # Return a UTF8-encoded, CSV-formatted string instead of a list of
-        # dicts.
-        f = cStringIO.StringIO()
-        try:
-            _write_csv(f, table_)
-            return f.getvalue()
-        finally:
-            f.close()
+        return _table_to_csv(table_)
     else:
         return table_
-
-
-def _write_csv(f, table):
-    """Write the given table (list of dicts) to the given file as CSV.
-
-    Writes UTF8-encoded, CSV-formatted text.
-
-    ``f`` could be an opened file, sys.stdout, or a StringIO.
-
-    """
-    # We assume that each dict in the list has the same keys.
-    fieldnames = table[0].keys()
-    writer = unicodecsv.DictWriter(f, fieldnames, encoding='utf-8')
-    writer.writeheader()
-
-    # Change lists into comma-separated strings.
-    for dict_ in table:
-        for key, value in dict_.items():
-            if type(value) in (list, tuple):
-                dict_[key] = ', '.join(value)
-
-    writer.writerows(table)
 
 
 def query(pattern_path, dict_, max_length=None, strip=False,
