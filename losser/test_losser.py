@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import collections
+import os.path
+import inspect
 
 import nose.tools
 
@@ -341,3 +343,66 @@ def test_max_length():
     table = losser.table(rows, columns)
 
     assert len(table[0]["Title"]) <= max_length
+
+
+def _this_directory():
+    """Return the path to this Python file's directory.
+
+    Return the full filesystem path to the directory containing this Python
+    source code file.
+
+    """
+    return os.path.dirname(os.path.abspath(
+        inspect.getfile(inspect.currentframe())))
+
+
+def test_table_from_file():
+    """Test table() when reading columns from file."""
+
+    rows = [
+        {
+            "author": "Guybrush Threepwood",
+            "notes": "Test row 1",
+            "resources": [
+                {"format": "CSV"},
+                {"format": "JSON"},
+            ],
+        },
+        {
+            "author": "LeChuck",
+            "notes": "Test row 2",
+            "resources": [
+                {"format": "XLS"},
+                {"format": "XLS"},
+            ],
+        },
+        {
+            "author": "Herman Toothrot",
+            "notes": "Test row 3",
+            "resources": [
+                {"format": "PDF"},
+                {"format": "TXT"},
+            ],
+        },
+    ]
+    path = os.path.join(_this_directory(), "test_columns.json")
+
+    table = losser.table(rows, path)
+
+    assert table == [
+        {
+            "Data Owner": "Guybrush Threepwood",
+            "Description": "Test row 1",
+            "Formats": ["CSV", "JSON"],
+        },
+        {
+            "Data Owner": "LeChuck",
+            "Description": "Test row 2",
+            "Formats": ["XLS"],
+        },
+        {
+            "Data Owner": "Herman Toothrot",
+            "Description": "Test row 3",
+            "Formats": ["PDF", "TXT"],
+        },
+    ]
