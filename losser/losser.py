@@ -207,9 +207,6 @@ def _process_list(pattern_path, list_, **kwargs):
 
 def _process_dict(pattern_path, dict_, case_sensitive=False, **kwargs):
 
-    if not pattern_path:
-        return []
-
     result = []
     pattern = pattern_path.pop()
 
