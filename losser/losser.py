@@ -1,11 +1,9 @@
-import re
-import collections
-import sys
-import unicodecsv
-import argparse
 import cStringIO
+import collections
 import json
 import pprint
+import re
+import unicodecsv
 
 
 class UniqueError(Exception):
@@ -13,7 +11,9 @@ class UniqueError(Exception):
 
 
 class InvalidColumnsFileError(Exception):
+
     """Exception raised when reading a columns.json file fails."""
+
     pass
 
 
@@ -142,7 +142,7 @@ def query(pattern_path, dict_, max_length=None, strip=False,
 
     if hyperlink:
         string_transformations.append(
-                lambda x: '=HYPERLINK("{0}")'.format(x))
+            lambda x: '=HYPERLINK("{0}")'.format(x))
 
     if isinstance(pattern_path, basestring):
         pattern_path = [pattern_path]
@@ -226,39 +226,3 @@ def _process_dict(pattern_path, dict_, case_sensitive=False, **kwargs):
                                           case_sensitive=case_sensitive,
                                           **kwargs))
     return result
-
-
-def main(args=None, table_function=None):
-
-    table_function = table_function or table
-
-    # Parse the command-line arguments.
-    parser = argparse.ArgumentParser(
-        description="Filter, transform and export a list of JSON objects on "
-                    "stdin to JSON or CSV on stdout",
-    )
-    parser.add_argument(
-        "--columns",
-        help="the JSON file specifying the columns to be output",
-        required=True,
-    )
-    parser.add_argument(
-        "-i", "--input",
-        help="read input from the given file instead of from stdin",
-        dest='input_data',  # Because input is a Python builtin.
-    )
-    parsed_args = parser.parse_args(args)
-
-    # Read the input data from stdin or a file.
-    if parsed_args.input_data:
-        input_data = open(parsed_args.input_data, 'r').read()
-    else:
-        input_data = sys.stdin.read()
-
-    dicts = json.loads(input_data)
-
-    csv_string = table_function(dicts, parsed_args.columns, csv=True)
-    sys.stdout.write(csv_string)
-
-
-if __name__ == "__main__": main()
