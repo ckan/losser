@@ -302,7 +302,7 @@ table to stdout, making it composable with other UNIX commands. For example:
 You can also specify columns on the command line instead of using a
 columns.json file. For example:
 
-    losser --column "Data Owner" --pattern "^author$" --unique --case-sensitive --column "Description" --pattern "^notes$" --unique --case-sensitive --max-length 255 --column Formats --pattern "^resources$" "^format$" --case-sensitive --deduplicate
+    losser --column "Data Owner" --pattern '^author$' --unique --case-sensitive --column "Description" --pattern '^notes$' --unique --case-sensitive --max-length 255 --column Formats --pattern '^resources$' '^format$' --case-sensitive --deduplicate
 
 You specify one or more `--column` options with the column title as argument
 and followed by a `--pattern` option and any other column options (`--unique`,
