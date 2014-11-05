@@ -166,7 +166,7 @@ def parse(parser=None, args=None, table_function=None, in_=None):
         dest='input_data',  # Because input is a Python builtin.
     )
     parser.add_argument("-c", "--column", action=ColumnsAction)
-    parser.add_argument("--pattern", action=ColumnsAction)
+    parser.add_argument("--pattern", action=ColumnsAction, nargs='+')
     parser.add_argument("--max-length", action=ColumnsAction)
     parser.add_argument("--strip", nargs="?", action=ColumnsAction)
     parser.add_argument("--deduplicate", nargs='?', action=ColumnsAction)
@@ -187,6 +187,10 @@ def parse(parser=None, args=None, table_function=None, in_=None):
         if "pattern" not in spec:
             raise ColumnWithoutPatternError(
                 'Column "{0}" needs a pattern'.format(title))
+
+        # Change length-1 patterns into strings (not lists of one string).
+        if len(spec["pattern"]) == 1:
+            spec["pattern"] = spec["pattern"][0]
 
     # Crash if no columns specified.
     # In the future we'll support simply converting all JSON fields to CSV

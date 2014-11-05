@@ -299,6 +299,25 @@ table to stdout, making it composable with other UNIX commands. For example:
 
     losser --columns columns.json < input.json > output.csv
 
+You can also specify columns on the command line instead of using a
+columns.json file. For example:
+
+    losser --column "Data Owner" --pattern "^author$" --unique --case-sensitive --column "Description" --pattern "^notes$" --unique --case-sensitive --max-length 255 --column Formats --pattern "^resources$" "^format$" --case-sensitive --deduplicate
+
+You specify one or more `--column` options with the column title as argument
+and followed by a `--pattern` option and any other column options (`--unique`,
+`--case-sensitive`, etc).
+
+The `--pattern` option can take more than one space-separated argument, in the
+case where the column's pattern path contains more than one pattern, for
+example: `--pattern "^resources$" "^format$"`.
+
+Column options like `--pattern`, `--unique`, `--max-length` etc apply to the
+preceding `--column` on the command-line.
+
+See `losser -h` for help.
+
+
 This will read input objects from `input.json`, read column queries from
 `columns.json`, and write output objects to `output.csv`.
 

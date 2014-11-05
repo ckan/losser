@@ -374,3 +374,22 @@ def test_max_length_with_invalid_arg():
         table_function=table_function, in_=mock_stdin)
 
     assert not table_function.called
+
+
+def test_pattern_with_multiple_arguments():
+    """The --pattern option can take more than one argument."""
+    table_function = mock.Mock()
+
+    mock_stdin = mock.Mock()
+    mock_stdin.read.return_value = '"foobar"'
+
+    cli.parse(
+        args=["--column", "Formats", "--pattern", "^resources$", "^format$"],
+        table_function=table_function,
+        in_=mock_stdin)
+
+    table_function.assert_called_once_with(
+        u"foobar",
+        collections.OrderedDict(
+            Formats={"pattern": ["^resources$", "^format$"]}),
+        csv=True)

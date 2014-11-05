@@ -104,6 +104,17 @@ def table(dicts, columns, csv=False):
     if isinstance(columns, basestring):
         columns = _read_columns_file(columns)
 
+    # Either "pattern" or "pattern_path" (but not both) is allowed in the
+    # columns.json file, but "pattern" gets normalised to "pattern_path" here.
+    for column in columns.values():
+        if "pattern" in column:
+            assert "pattern_path" not in column, (
+                'A column must have either a "pattern" or a "pattern_path"'
+                "but not both")
+            column["pattern_path"] = column["pattern"]
+            del column["pattern"]
+
+
     table_ = []
     for d in dicts:
         row = collections.OrderedDict()  # The row we'll return in the table.
