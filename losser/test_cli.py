@@ -393,3 +393,18 @@ def test_pattern_with_multiple_arguments():
         collections.OrderedDict(
             Formats={"pattern": ["^resources$", "^format$"]}),
         csv=True)
+
+
+def test_column_and_columns_together():
+    """It should raise if given ``--column`` and ``--columns`` together."""
+    table_function = mock.Mock()
+
+    mock_stdin = mock.Mock()
+    mock_stdin.read.return_value = '"foobar"'
+
+    args = ["--column", "foo", "--pattern", "foo", "--columns", "columns.json"]
+    nose.tools.assert_raises(
+        cli.ColumnsAndColumnsFileError, cli.parse, args=args,
+        table_function=table_function, in_=mock_stdin)
+
+    assert not table_function.called

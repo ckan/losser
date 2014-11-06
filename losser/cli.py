@@ -62,6 +62,10 @@ class InvalidColumnOptionArgument(CommandLineError):
     pass
 
 
+class ColumnsAndColumnsFileError(CommandLineError):
+    pass
+
+
 def _boolify(key, value, option_string):
 
     key = key.replace('-', '_')
@@ -192,10 +196,15 @@ def parse(parser=None, args=None, table_function=None, in_=None):
         if len(spec["pattern"]) == 1:
             spec["pattern"] = spec["pattern"][0]
 
-    # Crash if no columns specified.
-    # In the future we'll support simply converting all JSON fields to CSV
-    # columns if no columns are specified, and this will be removed.
-    if (not columns) and (not parsed_args.columns_file):
+    if columns and parsed_args.columns_file:
+        raise ColumnsAndColumnsFileError(
+            "You can't use the --column and --columns options together (yet)")
+    elif parsed_args.columns_file and not columns:
+        parsed_args.columns = parsed_args.columns_file
+    elif (not columns) and (not parsed_args.columns_file):
+        # Crash if no columns specified.
+        # In the future we'll support simply converting all JSON fields to CSV
+        # columns if no columns are specified, and this will be removed.
         raise NoColumnsError(
             "You must give either a --columns or at least one -c/--column "
             "argument")
