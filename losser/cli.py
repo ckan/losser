@@ -149,33 +149,97 @@ class ColumnsAction(argparse.Action):
             column[key] = value
 
 
-def parse(parser=None, args=None, table_function=None, in_=None):
+def make_parser(add_help=True, exclude_args=None):
+    """Return an argparse.ArgumentParser object with losser's arguments.
 
-    table_function = table_function or losser.table
+    Other projects can call this to get an ArgumentParser with losser's
+    command line interface to use as a parent parser for their own parser.
+    For example::
 
-    in_ = in_ or sys.stdin
+        parent_parser = losser.cli.make_parser(
+            add_help=False, exclude_args=["-i"])
+        parser = argparse.ArgumentParser(
+            description="Export datasets from a CKAN site to JSON or CSV.",
+            parents=[parent_parser])
+        parser.add_argument(...
 
-    # Parse the command-line arguments.
-    if not parser:
-        parser = argparse.ArgumentParser()
+    :param add_help: Whether or not to add losser's help text to the parser.
+        Pass add_help=False if you want to use your own help text in a child
+        parser.
+    :type add_help: bool
+
+    :param exclude_args: List of losser command-line arguments to exclude, use
+        this to exclude any default losser arguments that you don't want in
+        your own command. For example: exclude_args=["-i", "--max-length"].
+    :type exclude_args: list of strings
+
+    """
+    if exclude_args is None:
+        exclude_args = []
+    parser = argparse.ArgumentParser(add_help=add_help)
     parser.description = ("Filter, transform and export a list of JSON "
                           "objects on stdin to JSON or CSV on stdout")
-    parser.add_argument(
-        "--columns", dest="columns_file",
-        help="the JSON file specifying the columns to be output",
-    )
-    parser.add_argument(
-        "-i", "--input",
-        help="read input from the given file instead of from stdin",
-        dest='input_data',  # Because input is a Python builtin.
-    )
-    parser.add_argument("-c", "--column", action=ColumnsAction)
-    parser.add_argument("--pattern", action=ColumnsAction, nargs='+')
-    parser.add_argument("--max-length", action=ColumnsAction)
-    parser.add_argument("--strip", nargs="?", action=ColumnsAction)
-    parser.add_argument("--deduplicate", nargs='?', action=ColumnsAction)
-    parser.add_argument("--case-sensitive", nargs='?', action=ColumnsAction)
-    parser.add_argument("--unique", nargs="?", action=ColumnsAction)
+    if "--columns" not in exclude_args:
+        parser.add_argument(
+            "--columns", dest="columns_file",
+            help="the JSON file specifying the columns to be output",
+        )
+    if ("-i" not in exclude_args) and ("--input" not in exclude_args):
+        parser.add_argument(
+            "-i", "--input",
+            help="read input from the given file instead of from stdin",
+            dest='input_data',  # Because input is a Python builtin.
+        )
+    if ("-c" not in exclude_args) and ("--column" not in exclude_args):
+        parser.add_argument("-c", "--column", action=ColumnsAction)
+    if "--pattern" not in exclude_args:
+        parser.add_argument("--pattern", action=ColumnsAction, nargs='+')
+    if "--max-length" not in exclude_args:
+        parser.add_argument("--max-length", action=ColumnsAction)
+    if "--strip" not in exclude_args:
+        parser.add_argument("--strip", nargs="?", action=ColumnsAction)
+    if "--deduplicate" not in exclude_args:
+        parser.add_argument("--deduplicate", nargs='?', action=ColumnsAction)
+    if "--case-sensitive" not in exclude_args:
+        parser.add_argument(
+            "--case-sensitive", nargs='?', action=ColumnsAction)
+    if "--unique" not in exclude_args:
+        parser.add_argument("--unique", nargs="?", action=ColumnsAction)
+    return parser
+
+
+def parse(parser=None, args=None):
+    """Parse the command line arguments, return an argparse namespace object.
+
+    Other projects can call this function and pass in their own ArgumentParser
+    object (which should have a losser ArgumentParser from make_parser() above
+    as parent) to do the argument parsing and get the result (this does some
+    custom post-processing, beyond what argparse's parse_args() does). For
+    example::
+
+        parent_parser = losser.cli.make_parser(...)
+        parser = argparse.ArgumentParser(parents=[parent_parser])
+        parser.add_argument(...)
+        try:
+            parsed_args = losser.cli.parse(parser=parser)
+        except losser.cli.CommandLineError as err:
+            ...
+
+    :raises CommandLineError: If something went wrong during command-line
+        parsing. If the exception has a non-empty .message attribute it
+        contains an error message that hasn't been printed to stdout yet,
+        otherwise any error message has already been printed.
+
+    :raises CommandLineExit: If the result of command-line parsing means that
+        the command should exit without continuing, but this is not because of
+        an error (for example if the user passed --help). Any help text will
+        already have been written to stdout, the exit code that the process
+        should exit with is in the exception's .code attribute.
+        CommandLineExit is a subclass of CommandLineError above.
+
+    """
+    if not parser:
+        parser = make_parser()
 
     try:
         parsed_args = parser.parse_args(args)
@@ -186,6 +250,7 @@ def parse(parser=None, args=None, table_function=None, in_=None):
         columns = parsed_args.columns
     except AttributeError:
         columns = collections.OrderedDict()
+        parsed_args.columns = columns
 
     for title, spec in columns.items():
         if "pattern" not in spec:
@@ -208,31 +273,63 @@ def parse(parser=None, args=None, table_function=None, in_=None):
         raise NoColumnsError(
             "You must give either a --columns or at least one -c/--column "
             "argument")
+    else:
+        assert columns
+
+    return parsed_args
+
+
+def do(parser=None, args=None, in_=None, table_function=None):
+    """Read command-line args and stdin, return the result.
+
+    Read the command line arguments and the input data from stdin, pass them to
+    the table() function to do the filter and transform, and return the string
+    of CSV- or JSON-formatted text that should be written to stdout.
+
+    Note that although the output data is returned rather than written to
+    stdout, this function may write error messages or help text to stdout
+    (for example if there's an error with the command-line parsing).
+
+    :raises CommandLineError: see parse() above for details
+
+    """
+    in_ = in_ or sys.stdin
+    table_function = table_function or losser.table
+
+    parsed_args = parse(parser=parser, args=args)
 
     # Read the input data from stdin or a file.
     if parsed_args.input_data:
         input_data = open(parsed_args.input_data, 'r').read()
     else:
         input_data = in_.read()
-
     dicts = json.loads(input_data)
 
-    if parsed_args.columns_file:
-        csv_string = table_function(dicts, parsed_args.columns_file, csv=True)
-    else:
-        csv_string = table_function(dicts, parsed_args.columns, csv=True)
-    sys.stdout.write(csv_string)
+    csv_string = table_function(dicts, parsed_args.columns, csv=True)
+
+    return csv_string
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """Call do() and if it raises an exception then sys.exit() appropriately.
+
+    This makes sure that any usage and error messages are printed correctly,
+    and that the exit code is right.
+
+    do() itself doesn't call sys.exit() because we want it to be callable from
+    tests that check that it raises the right exception classes for different
+    invalid inputs.
+
+    """
+    parser = make_parser()
     try:
-        parse(parser)
+        output = do(parser=parser)
     except CommandLineExit as err:
         sys.exit(err.code)
     except CommandLineError as err:
         if err.message:
             parser.error(err.message)
+    sys.stdout.write(output)
 
 
 if __name__ == "__main__": main()

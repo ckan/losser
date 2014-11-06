@@ -24,7 +24,7 @@ def test_no_columns_argument():
     """It should crash if there are no --column or --columns args."""
     table_function = mock.Mock()
     nose.tools.assert_raises(
-        cli.NoColumnsError, cli.parse, args=[],
+        cli.NoColumnsError, cli.do, args=[],
         table_function=table_function)
     assert not table_function.called
 
@@ -33,7 +33,7 @@ def test_help():
     """It should exit with code 0 if there's a -h argument."""
     table_function = mock.Mock()
     try:
-        cli.parse(args=['-h'], table_function=table_function)
+        cli.do(args=['-h'], table_function=table_function)
         assert False, "losser -h should raise an exception"
     except cli.CommandLineExit as err:
         assert err.code == 0
@@ -44,7 +44,7 @@ def test_long_help():
     """It should exit with code 0 if there's a --help argument."""
     table_function = mock.Mock()
     try:
-        cli.parse(args=['--help'], table_function=table_function)
+        cli.do(args=['--help'], table_function=table_function)
         assert False, "losser --help should raise an exception"
     except cli.CommandLineExit as err:
         assert err.code == 0
@@ -60,7 +60,7 @@ def test_help_and_other_args():
     """
     table_function = mock.Mock()
     try:
-        cli.parse(
+        cli.do(
             args=['-h', '--columns', 'test_columns.json'],
             table_function=table_function)
         assert False, "losser -h should raise an exception"
@@ -77,7 +77,7 @@ def test_columns():
     mock_stdin = mock.Mock()
     mock_stdin.read.return_value = '"foobar"'
 
-    cli.parse(
+    cli.do(
         args=['--columns', 'test_columns.json'], table_function=table_function,
         in_=mock_stdin)
 
@@ -94,7 +94,7 @@ def test_columns_with_no_arg():
     mock_stdin.read.return_value = '"foobar"'
 
     try:
-        cli.parse(
+        cli.do(
             args=['--columns'], table_function=table_function, in_=mock_stdin)
         assert False, "It should raise if given --columns with no arg"
     except cli.CommandLineExit as err:
@@ -108,7 +108,7 @@ def test_unrecognized_argument():
     """It should exit with status 2 if given an unrecognized argument."""
     table_function = mock.Mock()
     try:
-        cli.parse(args=['--columns', 'test_columns.json', '--foobar'],
+        cli.do(args=['--columns', 'test_columns.json', '--foobar'],
                   table_function=table_function)
         assert False, "It should raise if given an unrecognized argument"
     except cli.CommandLineExit as err:
@@ -128,7 +128,7 @@ def test_input():
 
     for arg in ("-i", "--input"):
         table_function = mock.Mock()
-        cli.parse(
+        cli.do(
             args=['--columns', 'test_columns.json',
                   arg, _absolute_path('test_input.json')],
             table_function=table_function, in_=mock_stdin)
@@ -145,7 +145,7 @@ def test_with_one_column_argument():
     mock_stdin = mock.Mock()
     mock_stdin.read.return_value = '"foobar"'
 
-    cli.parse(
+    cli.do(
         args=["--column", "Title", "--pattern", "^title$"],
         table_function=table_function,
         in_=mock_stdin)
@@ -163,7 +163,7 @@ def test_with_many_column_arguments():
     mock_stdin = mock.Mock()
     mock_stdin.read.return_value = '"foobar"'
 
-    cli.parse(
+    cli.do(
         args=[
             "--column", "Title", "--pattern", "^title$", "--case-sensitive",
             "--strip", "no",
@@ -190,7 +190,7 @@ def test_with_repeated_column_option():
     args = ["--column", "Title", "--pattern", "^title$", "--pattern",
             "repeated"]
     nose.tools.assert_raises(
-        cli.DuplicateColumnOptionError, cli.parse, args=args,
+        cli.DuplicateColumnOptionError, cli.do, args=args,
         table_function=table_function)
     assert not table_function.called
 
@@ -213,7 +213,7 @@ def test_with_implicit_true():
     }
 
     table_function = mock.Mock()
-    cli.parse(
+    cli.do(
         args=["--column", "Title", "--pattern", "^title$", "--unique"],
         table_function=table_function, in_=mock_stdin)
 
@@ -235,7 +235,7 @@ def test_with_explicit_true():
 
     for value in ("true", "True", "y", "Y", "yes", "Yes", "YES"):
         table_function = mock.Mock()
-        cli.parse(
+        cli.do(
             args=[
                 "--column", "Title", "--pattern", "^title$",
                 "--case-sensitive", value,
@@ -262,7 +262,7 @@ def test_with_explicit_false():
 
     for value in ("false", "False", "n", "N", "no", "No", "NO"):
         table_function = mock.Mock()
-        cli.parse(
+        cli.do(
             args=[
                 "--column", "Title", "--pattern", "^title$",
                 "--strip", value,
@@ -283,7 +283,7 @@ def test_column_with_no_pattern():
     mock_stdin.read.return_value = '"foobar"'
 
     nose.tools.assert_raises(
-        cli.ColumnWithoutPatternError, cli.parse,
+        cli.ColumnWithoutPatternError, cli.do,
         args=["--column", "Title"], table_function=table_function,
         in_=mock_stdin)
     assert not table_function.called
@@ -302,7 +302,7 @@ def test_column_option_with_no_column():
                    "--pattern", "--max-length"):
         nose.tools.assert_raises(
             cli.ColumnOptionWithNoPrecedingColumnError,
-            cli.parse, args=[option, "foo"], table_function=table_function,
+            cli.do, args=[option, "foo"], table_function=table_function,
             in_=mock_stdin)
         assert not table_function.called
 
@@ -316,7 +316,7 @@ def test_boolean_option_with_invalid_arg():
 
     for option in ("--unique", "--strip", "--deduplicate", "--case-sensitive"):
         nose.tools.assert_raises(
-            cli.InvalidColumnOptionArgument, cli.parse,
+            cli.InvalidColumnOptionArgument, cli.do,
             args=["--column", "foo", option, "invalid"],
             table_function=table_function, in_=mock_stdin)
         assert not table_function.called
@@ -329,7 +329,7 @@ def test_max_length():
     mock_stdin = mock.Mock()
     mock_stdin.read.return_value = '"foobar"'
 
-    cli.parse(
+    cli.do(
         args=["--column", "Title", "--pattern", "^title$",
               "--max-length", "255"],
         table_function=table_function,
@@ -351,7 +351,7 @@ def test_max_length_with_no_arg():
     mock_stdin.read.return_value = '"foobar"'
 
     try:
-        cli.parse(
+        cli.do(
             args=["--column", "foo", "--pattern", "foo", "--max-length"],
             table_function=table_function, in_=mock_stdin)
         assert False, "It should raise if given --max-length with no arg"
@@ -370,7 +370,7 @@ def test_max_length_with_invalid_arg():
 
     args = ["--column", "foo", "--pattern", "foo", "--max-length", "invalid"]
     nose.tools.assert_raises(
-        cli.InvalidColumnOptionArgument, cli.parse, args=args,
+        cli.InvalidColumnOptionArgument, cli.do, args=args,
         table_function=table_function, in_=mock_stdin)
 
     assert not table_function.called
@@ -383,7 +383,7 @@ def test_pattern_with_multiple_arguments():
     mock_stdin = mock.Mock()
     mock_stdin.read.return_value = '"foobar"'
 
-    cli.parse(
+    cli.do(
         args=["--column", "Formats", "--pattern", "^resources$", "^format$"],
         table_function=table_function,
         in_=mock_stdin)
@@ -404,7 +404,7 @@ def test_column_and_columns_together():
 
     args = ["--column", "foo", "--pattern", "foo", "--columns", "columns.json"]
     nose.tools.assert_raises(
-        cli.ColumnsAndColumnsFileError, cli.parse, args=args,
+        cli.ColumnsAndColumnsFileError, cli.do, args=args,
         table_function=table_function, in_=mock_stdin)
 
     assert not table_function.called

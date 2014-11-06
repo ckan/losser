@@ -336,6 +336,45 @@ be a list of dicts. If you pass `csv=True` to `table()` it'll return a
 CSV-formatted string instead. See `table()`'s docstring for more arguments.
 
 
+Inheriting Losser's Command Line Interface
+------------------------------------------
+
+Losser's command line interface with `--column` and related arguments is fairly
+complicated to implement. You may want to offer the same command line features
+in your own losser-based command without having to reimplement them.
+
+For example [ckanapi-exporter](https://github.com/ckan/ckanapi-exporter) offers
+the losser command line interface but adds its own `--url` and `--apikey`
+arguments to pull the input data directly from a CKAN site instead of reading
+it from stdin.
+
+`losser.cli` provides `make_parser()` and `parse()` functions to enable
+inheriting its command-line interface. Here's how you use them:
+
+    parent_parser = losser.cli.make_parser(add_help=False, exclude_args=["-i"])
+    parser = argparse.ArgumentParser(
+        description="Export datasets from a CKAN site to JSON or CSV.",
+        parents=[parent_parser],
+    )
+    parser.add_argument("--url", required=True)
+    parser.add_argument("--apikey")
+    try:
+        parsed_args = losser.cli.parse(parser=parser)
+    except losser.cli.CommandLineExit as err:
+        sys.exit(err.code)
+    except losser.cli.CommandLineError as err:
+        if err.message:
+            parser.error(err.message)
+    url = parsed_args.url
+    columns = parsed_args.columns
+    apikey = parsed_args.apikey
+    datasets = get_datasets_from_ckan(url, apikey)
+    csv_string = losser.losser.table(datasets, columns, csv=True)
+
+See [ckanapi-exporter](https://github.com/ckan/ckanapi-exporter) for a
+working example.
+
+
 Running the Tests
 -----------------
 
