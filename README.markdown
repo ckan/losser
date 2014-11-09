@@ -116,18 +116,20 @@ To export fields from sub-objects use a _pattern path_: a pattern with more
 than one argument. Our example JSON objects contain a "tracking_summary"
 sub-object with a "total" field:
 
-    [
-      {
-        "author": "Bundesbank",
-        "maintainer": "Rufus Pollock",
-        "tracking_summary": {
-          "total": 456,
-          "recent": 19
-        },
-        ...
-      },
-      ...
-    ]
+```json
+[
+  {
+    "author": "Bundesbank",
+    "maintainer": "Rufus Pollock",
+    "tracking_summary": {
+      "total": 456,
+      "recent": 19
+    },
+    ...
+  },
+  ...
+]
+```
 
 To extract this field into a third column:
 
@@ -173,26 +175,28 @@ results.
 Our example objects contain lists of "resource" objects each with a "format"
 field, among others:
 
-    [
+```json
+[
+  {
+    "author": "Bundesbank",
+    "maintainer": "Rufus Pollock",
+    "resources": [
       {
-        "author": "Bundesbank",
-        "maintainer": "Rufus Pollock",
-        "resources": [
-          {
-            "description": "CSV file extracted and cleaned from source excel.",
-            "format": "CSV",
-            ...
-          },
-          {
-            "description": "Original Excel version.",
-            "format": "XLS",
-            ...
-          },
-        ],
+        "description": "CSV file extracted and cleaned from source excel.",
+        "format": "CSV",
         ...
       },
-      ...
-    ]
+      {
+        "description": "Original Excel version.",
+        "format": "XLS",
+        ...
+      },
+    ],
+    ...
+  },
+  ...
+]
+```
 
 To extract each of the format fields from each dataset:
 
@@ -360,25 +364,27 @@ it from stdin.
 `losser.cli` provides `make_parser()` and `parse()` functions to enable
 inheriting its command-line interface. Here's how you use them:
 
-    parent_parser = losser.cli.make_parser(add_help=False, exclude_args=["-i"])
-    parser = argparse.ArgumentParser(
-        description="Export datasets from a CKAN site to JSON or CSV.",
-        parents=[parent_parser],
-    )
-    parser.add_argument("--url", required=True)
-    parser.add_argument("--apikey")
-    try:
-        parsed_args = losser.cli.parse(parser=parser)
-    except losser.cli.CommandLineExit as err:
-        sys.exit(err.code)
-    except losser.cli.CommandLineError as err:
-        if err.message:
-            parser.error(err.message)
-    url = parsed_args.url
-    columns = parsed_args.columns
-    apikey = parsed_args.apikey
-    datasets = get_datasets_from_ckan(url, apikey)
-    csv_string = losser.losser.table(datasets, columns, csv=True)
+```python
+parent_parser = losser.cli.make_parser(add_help=False, exclude_args=["-i"])
+parser = argparse.ArgumentParser(
+    description="Export datasets from a CKAN site to JSON or CSV.",
+    parents=[parent_parser],
+)
+parser.add_argument("--url", required=True)
+parser.add_argument("--apikey")
+try:
+    parsed_args = losser.cli.parse(parser=parser)
+except losser.cli.CommandLineExit as err:
+    sys.exit(err.code)
+except losser.cli.CommandLineError as err:
+    if err.message:
+        parser.error(err.message)
+url = parsed_args.url
+columns = parsed_args.columns
+apikey = parsed_args.apikey
+datasets = get_datasets_from_ckan(url, apikey)
+csv_string = losser.losser.table(datasets, columns, csv=True)
+```
 
 See [ckanapi-exporter](https://github.com/ckan/ckanapi-exporter) for a
 working example.
@@ -390,15 +396,21 @@ Development
 To install losser for development, create and activate a Python virtual
 environment then do:
 
-    git clone https://github.com/ckan/losser.git
-    cd losser
-    python setup.py develop
-    pip install -r dev-requirements.txt
+```bash
+git clone https://github.com/ckan/losser.git
+cd losser
+python setup.py develop
+pip install -r dev-requirements.txt
+```
 
 To run the tests do:
 
-    nosetests
+```bash
+nosetests
+```
 
 To run the tests and produce a test coverage report do:
 
-    nosetests --with-coverage --cover-inclusive --cover-erase --cover-tests
+```bash
+nosetests --with-coverage --cover-inclusive --cover-erase --cover-tests
+```
