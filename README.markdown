@@ -228,6 +228,9 @@ losser --column "Data Owner" --pattern '^author$' \
   </tr>
   <tr>
     <td>...</td>
+    <td>...</td>
+    <td>...</td>
+    <td>...</td>
   </tr>
 </table>
 
