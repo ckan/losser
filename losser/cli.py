@@ -5,6 +5,7 @@ import argparse
 import collections
 import json
 import sys
+import StringIO
 
 import losser.losser as losser
 
@@ -205,6 +206,8 @@ def make_parser(add_help=True, exclude_args=None):
             "--case-sensitive", nargs='?', action=ColumnsAction)
     if "--unique" not in exclude_args:
         parser.add_argument("--unique", nargs="?", action=ColumnsAction)
+    if ("-p" not in exclude_args) and ("--pretty" not in exclude_args):
+        parser.add_argument("-p", "--pretty", action="store_true")
     return parser
 
 
@@ -305,7 +308,8 @@ def do(parser=None, args=None, in_=None, table_function=None):
         input_data = in_.read()
     dicts = json.loads(input_data)
 
-    csv_string = table_function(dicts, parsed_args.columns, csv=True)
+    csv_string = table_function(dicts, parsed_args.columns, csv=True,
+                                pretty=parsed_args.pretty)
 
     return csv_string
 

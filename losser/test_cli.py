@@ -82,7 +82,7 @@ def test_columns():
         in_=mock_stdin)
 
     table_function.assert_called_once_with(
-        "foobar", "test_columns.json", csv=True)
+        "foobar", "test_columns.json", csv=True, pretty=False)
 
 
 @mock.patch('sys.stderr', DEVNULL)
@@ -135,7 +135,7 @@ def test_input():
 
         assert not mock_stdin.called
         table_function.assert_called_once_with(
-            "foobar", "test_columns.json", csv=True)
+            "foobar", "test_columns.json", csv=True, pretty=False)
 
 
 def test_with_one_column_argument():
@@ -153,7 +153,7 @@ def test_with_one_column_argument():
     table_function.assert_called_once_with(
         u"foobar",
         collections.OrderedDict(Title={"pattern": "^title$"}),
-        csv=True)
+        csv=True, pretty=False)
 
 
 def test_with_many_column_arguments():
@@ -181,7 +181,7 @@ def test_with_many_column_arguments():
     expected_columns["Owner"] = {
         "pattern": "^author$", "max_length": 255, "deduplicate": True}
     table_function.assert_called_once_with(
-        "foobar", expected_columns, csv=True)
+        "foobar", expected_columns, csv=True, pretty=False)
 
 
 def test_with_repeated_column_option():
@@ -218,7 +218,7 @@ def test_with_implicit_true():
         table_function=table_function, in_=mock_stdin)
 
     table_function.assert_called_once_with(
-        "foobar", expected_columns, csv=True)
+        "foobar", expected_columns, csv=True, pretty=False)
 
 
 def test_with_explicit_true():
@@ -245,7 +245,7 @@ def test_with_explicit_true():
         )
 
         table_function.assert_called_once_with(
-            "foobar", expected_columns, csv=True)
+            "foobar", expected_columns, csv=True, pretty=False)
 
 
 def test_with_explicit_false():
@@ -272,7 +272,7 @@ def test_with_explicit_false():
         )
 
         table_function.assert_called_once_with(
-            "foobar", expected_columns, csv=True)
+            "foobar", expected_columns, csv=True, pretty=False)
 
 
 def test_column_with_no_pattern():
@@ -339,7 +339,7 @@ def test_max_length():
         u"foobar",
         collections.OrderedDict(
             Title={"pattern": "^title$", "max_length": 255}),
-        csv=True)
+        csv=True, pretty=False)
 
 
 @mock.patch('sys.stderr', DEVNULL)
@@ -392,7 +392,7 @@ def test_pattern_with_multiple_arguments():
         u"foobar",
         collections.OrderedDict(
             Formats={"pattern": ["^resources$", "^format$"]}),
-        csv=True)
+        csv=True, pretty=False)
 
 
 def test_column_and_columns_together():

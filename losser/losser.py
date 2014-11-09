@@ -3,6 +3,8 @@ import collections
 import json
 import pprint
 import re
+
+import tabulate
 import unicodecsv
 
 
@@ -80,7 +82,7 @@ def _table_to_csv(table_):
         f.close()
 
 
-def table(dicts, columns, csv=False):
+def table(dicts, columns, csv=False, pretty=False):
     """Query a list of dicts with a list of queries and return a table.
 
     A "table" is a list of OrderedDicts each having the same keys in the same
@@ -122,9 +124,15 @@ def table(dicts, columns, csv=False):
             row[column_title] = query(dict_=d, **column_spec)
         table_.append(row)
 
-    if csv:
+    if pretty:
+        # Return a pretty-printed string (looks like a nice table when printed
+        # to stdout).
+        return tabulate.tabulate(table_, tablefmt="grid", headers="keys")
+    elif csv:
+        # Return a string of CSV-formatted text.
         return _table_to_csv(table_)
     else:
+        # Return a list of dicts.
         return table_
 
 
