@@ -19,8 +19,8 @@ Losser is a little JSON to CSV converter:
   fields while ignoring others
 * And it can *transform* the objects - renaming and reordering fields,
   truncating and formatting values, combining multiple values into lists,
-  deduplicating, etc.
-* Losser can be used on the command line or as a Python module.
+  deduplicating, etc
+* Losser can be used on the command line or as a Python module
 
 Originally created for
 [ckanapi-exporter](https://github.com/ckan/ckanapi-exporter).
@@ -45,12 +45,13 @@ losser --column "Data Owner" --pattern '^author$' < input.json
 
 Losser reads a list of JSON objects from stdin and writes the CSV text to
 stdout. `input.json` should be a JSON file containing a list of objects.
-The examples in this README use this [input.json file](input.json).
+The examples in this README use this [input.json file](input.json) (which
+contains datasets exported from demo.ckan.org).
 
 Losser will search each object for fields matching the
 [regular expression](https://docs.python.org/2/howto/regex.html#regex-howto)
 `^author$` and put the values in a column titled "Data Owner".
-The output will be a one-column CSV file (written to stdout):
+The output will be a one-column CSV file:
 
 <table>
   <tr>
@@ -72,7 +73,9 @@ You can add as many columns as you want: just add a `--column` and a
 you specify them:
 
 ```bash
-losser --column "Data Owner" --pattern '^author$' --column Maintainer --pattern '^maintainer$' < input.json
+losser --column "Data Owner" --pattern '^author$' \
+    --column Maintainer --pattern '^maintainer$' \
+    < input.json
 ```
 
 <table>
@@ -89,6 +92,7 @@ losser --column "Data Owner" --pattern '^author$' --column Maintainer --pattern 
     <td>Someone Else</td>
   </tr>
   <tr>
+    <td>...</td>
     <td>...</td>
   </tr>
 </table>
@@ -129,8 +133,8 @@ To extract this field into a third column:
 
 ```bash
 losser --column "Data Owner" --pattern '^author$' \
-    --columm Maintainer --pattern '^maintainer$' \
-    --column "Total Views" --pattern '^tracking summary$' "total" \
+    --column Maintainer --pattern '^maintainer$' \
+    --column "Total Views" --pattern '^tracking_summary$' "total" \
     < input.json
 ```
 
@@ -155,8 +159,8 @@ losser --column "Data Owner" --pattern '^author$' \
   </tr>
 </table>
 
-A pattern path can take any number of arguments to recurse into any number
-depth sub-objects.
+A pattern path can take any number of arguments to recurse into any depth
+sub-objects.
 
 
 ### Finding Fields in Sub-Lists
@@ -194,8 +198,8 @@ To extract each of the format fields from each dataset:
 
 ```bash
 losser --column "Data Owner" --pattern '^author$' \
-    --columm Maintainer --pattern '^maintainer$' \
-    --column "Total Views" --pattern '^tracking summary$' "total" \
+    --column Maintainer --pattern '^maintainer$' \
+    --column "Total Views" --pattern '^tracking_summary$' "total" \
     --column Formats --pattern '^resources$' 'format' \
     < input.json
 ```
@@ -278,7 +282,7 @@ For example an "Update Frequency" field that appears as "Update", "update",
 To catch all of these fields and put them into a single column in the output
 CSV, just supply a pattern that matches all of them:
 
-```
+```bash
 losser --column "Update Frequency" --pattern "^update.*" --unique < input.json
 ```
 
