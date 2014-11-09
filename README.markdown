@@ -10,273 +10,20 @@
 Losser
 ======
 
-A little UNIX command and Python library for lossy filter, transform, and
-export of JSON to Excel-compatible CSV.
-Created for [ckanapi-exporter](https://github.com/ckan/ckanapi-exporter).
-
-Losser can either be run as a UNIX command or used as a Python library
-(see [Usage](#usage) below). It takes a JSON-formatted list of objects
-(or a list of Python dicts) as input and produces a "table" as output.
-
-The input objects don't all have to have the same fields or structure as each
-other, and may contain sub-lists and sub-objects arbitrarily nested.
-
-The output "table" is a list of objects that all have the same keys in the same
-order, and with sub-objects and sub-lists nested no more than one level deep.
-It can be output as:
-
-* A list of Python OrderedDicts each having the same keys in the same order
-* A string of JSON-formatted text representing a list of objects each having
-  the same keys in the same order
-  ([TODO](https://github.com/ckan/losser/issues/3))
-* A string of CSV-formatted text, one object per CSV row. The rows of the CSV
-  correspond to the objects in the list of output objects if they had been
-  returned as Python or JSON Data, and the columns correspond to the objects'
-  keys.
-
-The input objects can be filtered and transformed before producing the output
-table. You provide a list of "column query" objects in a `columns.json` file
-that specifies what columns the output table should have, and how the values
-for those columns should be retrieved from the input objects.
-
-For example, if you had some input objects that looked like this:
-
-    [
-      {
-        "author": "Sean Hammond",
-        "title": "An Example Input Object",
-        "extras":
-          {
-            "Delivery Unit": "Commissioning"
-          {
-      },
-      ...
-    ]
-
-You might transform them using a `columns.json` file like this:
-
-    {
-        "Data Owner": {
-            "pattern_path": "^author$"
-        },
-        "Title": {
-            "pattern_path": "^title$"
-        },
-        "Delivery Unit": {
-            "pattern_path": ["^extras$", "^Delivery Unit$"]
-        }
-    }
-
-This would output a CSV file like this:
-
-    Data Owner,Title,Delivery Unit
-    Sean Hammond,An Example Input Object,Commissioning
-    Frank Black,Another Example Object,Some Other Unit
-    ...
-
-The `columns.json` file above specifies three column headings for the output
-table:
-
-1. Data Owner
-2. Title
-3. Delivery Unit
-
-The values for each column are retrieved from the input objects by following a
-"pattern path": a list of regular expressions that are matched against the keys
-of the input object and its sub-objects in turn to find a value.
-
-For example the "Data Owner" field above has the pattern path `"^author$"` which
-matches the string "author". This will find top-level keys named "author" in
-the input objects and output their values in the "Data Owner" column of the
-output table.
-
-The "Delivery Unit" column above has a more complex pattern path:
-`["^extras$", "^Delivery Unit$"]`. This will find the top-level key "extras" in
-an input object and, assuming the value for the "extras" key is a sub-object,
-will find and return the value for the "Delivery Unit" key in the sub-object.
-
-Pattern paths can be arbitrarily long, recursing into arbitrarily deeply nested
-sub-objects.
-
-One of the patterns in a pattern path may match multiple keys in an object or
-sub-object. In that case losser recurses on each of the matched keys and ends
-up returning a list of values instead of a single value.
-
-For example given this input object:
-
-    {
-      "update": "yearly",
-      "update frequency": "monthly",
-      ...
-    }
-
-The pattern path `"^update.*"` (which matches both "update" and "update
-frequency") would output `"yearly, monthly"` (a quoted, comma-separated list)
-in the corresponding cell in the CSV output.
-
-If a pattern path goes through a sub-list in the input dict losser will iterate
-over the list and recurse on each of its items. Again it will end up returning
-a list of values instead of a single value.
-
-For example, given a list of input objects like this:
-
-    [
-      {
-        "resources": [
-          {
-            "format": "CSV",
-            ...
-          },
-          {
-            "format": "JSON",
-            ...
-          },
-          ...
-        ],
-        ...
-      },
-      ...
-    ]
-
-The pattern path `["^resources$", "^format$"]` will find each object's
-"resources" sub-list and then find the "format" field in each object in the
-sub-list. The values in the CSV column will be lists like `"CSV, JSON"`.
-List can optionally be deduplicated.
-
-Nested lists can occur (when the input object contains a list of lists, for
-example). These are flattened in the output cells.
-
-Some of the filtering and transformations you can do with losser include:
-
-* Extract some fields from the objects and filter out others.
-
-  Any fields in an input object that do not match any of the pattern paths in
-  the `columns.json` file are filtered out.
-
-  ([TODO](https://github.com/ckan/losser/issues/2): Support appending unmatched
-  fields to the end of the ouput table as additional columns).
-
-* Specify the order of the columns in the output table.
-
-  Columns are output in the same order that they appear in the `columns.json`
-  file, which does not have to be the same order as the corresponding fields in
-  the input objects.
-
-* Rename fields, using a different name for the column in the output table than
-  for the field in the input objects.
-
-  For example to get the "notes" field from each input object and place them
-  all in a "description" column in the output table, put this object in your
-  `columns.json`:
-
-      "Description": {
-        "pattern_path": "^notes$",
-      }
-
-* Match patterns case-sensitively.
-
-  By default patterns are matched case-insensitively. To do case-sensitive
-  matching put `"case_sensitive": true` in a column query in your
-  `columns.json` file:
-
-      "Title": {
-        "pattern_path": "^title$",
-        "case_sensitive": true
-      },
-
-  This will match "title" in the input object, but not "Title" or "TITLE".
-
-* Transform the matched values, for example truncating or stripping whitespace
-  from strings.
-
-* Provide arbitrary pre-processor and post-processor functions to do custom
-  transformations on the input and output objects
-  ([TODO](https://github.com/ckan/losser/issues/1)).
-
-* Find inconsistently-named fields using a pattern that matches any of the
-  names and combine them into a single column in the output table.
-
-  For example you can provide a pattern like `"^update.*"` that will find keys
-  named "update", "Update", "Update Frequency" etc. in different input objects
-  and collect their values in a single "Update Frequency" column.
-
-* Collect multiple fields together in a single column.
-
-  If a pattern matches multiple fields they'll be output as a quoted
-  comma-separated list in a single cell in the CSV.
-
-  For example with an input object like this:
-
-      {
-        "Contributor 1": "Thom Yorke",
-        "Contributor 2": "Nigel Godrich",
-        "Contributor 3": "Jonny Greenwood",
-        ...
-      }
-
-  The pattern `"^Contributor.*"` will match all three fields and the value in
-  the CSV cell will be `"Thom Yorke,Nigel Godrich,Jonny Greenwood"`.
-
-* You can specify that a pattern path should find a unique value in the object,
-  and if more than one value in the object matches the pattern (and a list
-  would be returned) an exception will be raised.
-
-  Use `"unique": true` in a column query in your `columns.json` file:
-
-      "Title": {
-        "pattern_path": "^title$",
-        "unique": true
-      },
-
-  This is useful for debugging pattern paths that you expect to be unique.
-
-* You can specify that a pattern path *must* match a value in the object, and
-  an exception will be raised if there's no matching path through the object
-  ([TODO](https://github.com/ckan/losser/issues/4)).
-
-* When a pattern matches multiple paths through the input object, or matches a
-  path going through a sub-list, the resulting list of values in the output
-  table cell can be deduplicated. Put `"deduplicate": true` in a column query
-  in your `columns.json` file:
-
-      "Format": {
-          "pattern_path": ["^resources$", "^format$"],
-          "deduplicate": true
-      },
-
-
-What it can't do (yet):
-
-* Pattern match against the values of items (as opposed to their keys).
-
-  When following a pattern path through an object, when losser hits an
-  object/dictionary in the input, either one of the top-level objects in the
-  list of input objects or a sub-object, losser matches the relevant regex
-  against the object's keys and then recurses on the values of each of the
-  matched keys.
-
-  If the key matches the pattern it recurses, you can't also specify a pattern
-  to match the value against.
-
-  When it hits a string, number, boolean or ``None``/``null`` losser returns
-  it. You can't give it a pattern to match the value against to decide whether
-  to return it or not.
-
-  When it hits a list losser iterates over the items in the list and for each
-  item either returns it or, if it's a sub-list or sub-object, recurses.
-  (When sub-lists or sub-objects would cause a nested list to be returned it's
-  flattened into a single list and optionally deduplicated.) Again, you can't
-  provide a pattern to be matched against each item to decide whether to
-  return/recurse or not.
-
-  Adding pattern matching against values as well as keys would add a lot of
-  power.
-
-
-Requirements
-------------
-
-Python 2.7.
+Losser is a little JSON to CSV converter:
+
+* It takes a list of JSON objects as input and produces a CSV file as output
+* The JSON objects don't all have to have the same keys or structure,
+  and they may contain sub-objects and sub-lists arbitrarily nested
+* Losser can *filter* the JSON objects - finding and exporting some
+  fields while ignoring others
+* And it can *transform* the objects - renaming and reordering fields,
+  truncating and formatting values, combining multiple values into lists,
+  deduplicating, etc.
+* Losser can be used on the command line or as a Python module.
+
+Originally created for
+[ckanapi-exporter](https://github.com/ckan/ckanapi-exporter).
 
 
 Installation
@@ -286,58 +33,316 @@ To install run:
 
     pip install losser
 
-To install for development, create and activate a Python virtual environment
-then do:
-
-    git clone https://github.com/ckan/losser.git
-    cd losser
-    python setup.py develop
-    pip install -r dev-requirements.txt
-
 
 Usage
 -----
 
-On the command-line losser reads input objects from stdin and writes the output
-table to stdout, making it composable with other UNIX commands. For example:
+On the command line:
 
-    losser --columns columns.json < input.json > output.csv
+```bash
+losser --column "Data Owner" --pattern '^author$' < input.json
+```
 
-You can also specify columns on the command line instead of using a
-columns.json file. For example:
+Losser reads a list of JSON objects from stdin and writes the CSV text to
+stdout. `input.json` should be a JSON file containing a list of objects.
+The examples in this README use this [input.json file](input.json).
 
-    losser --column "Data Owner" --pattern '^author$' --unique --case-sensitive --column "Description" --pattern '^notes$' --unique --case-sensitive --max-length 255 --column Formats --pattern '^resources$' '^format$' --case-sensitive --deduplicate
+Losser will search each object for fields matching the
+[regular expression](https://docs.python.org/2/howto/regex.html#regex-howto)
+`^author$` and put the values in a column titled "Data Owner".
+The output will be a one-column CSV file (written to stdout):
 
-You specify one or more `--column` options with the column title as argument
-and followed by a `--pattern` option and any other column options (`--unique`,
-`--case-sensitive`, etc).
+<table>
+  <tr>
+    <th>Data Owner</th>
+  </tr>
+  <tr>
+    <td>Bundesbank</td>
+  </tr>
+  <tr>
+    <td>Lucy Chambers</td>
+  </tr>
+  <tr>
+    <td>...</td>
+  </tr>
+</table>
 
-The `--pattern` option can take more than one space-separated argument, in the
-case where the column's pattern path contains more than one pattern, for
-example: `--pattern "^resources$" "^format$"`.
+You can add as many columns as you want: just add a `--column` and a
+`--pattern` argument for each column. The columns will appear in the order that
+you specify them:
 
-Column options like `--pattern`, `--unique`, `--max-length` etc apply to the
-preceding `--column` on the command-line.
+```bash
+losser --column "Data Owner" --pattern '^author$' --column Maintainer --pattern '^maintainer$' < input.json
+```
 
-See `losser -h` for help.
+<table>
+  <tr>
+    <th>Data Owner</th>
+    <th>Maintainer</th>
+  </tr>
+  <tr>
+    <td>Bundesbank</td>
+    <td>Rufus Pollock</td>
+  </tr>
+  <tr>
+    <td>Lucy Chambers</td>
+    <td>Someone Else</td>
+  </tr>
+  <tr>
+    <td>...</td>
+  </tr>
+</table>
 
 
-This will read input objects from `input.json`, read column queries from
-`columns.json`, and write output objects to `output.csv`.
+### Composing with Other Commands
 
-To use losser as a Python library:
+Losser tries to be a good UNIX citizen. It aims to do one thing and do it well,
+and to be composable with other UNIX commands using `<`, `>` and `|`:
 
-    import losser.losser as losser
-    table = losser.table(input_objects, columns)
-
-`input_objects` should be a list of dicts. `columns` can be either a list of
-dicts or the path to a `columns.json` file (string). The returned `table` will
-be a list of dicts. If you pass `csv=True` to `table()` it'll return a
-CSV-formatted string instead. See `table()`'s docstring for more arguments.
+* Reads input from stdin
+* Writes clean, undecorated CSV text to stdout
+* Writes errors and help text to stderr not stdout
+* Sets exit status to 0 normally or non-zero if something went wrong
+* Is always non-interactive
 
 
-Inheriting Losser's Command Line Interface
-------------------------------------------
+### Finding Fields in Sub-Objects
+
+To export fields from sub-objects use a _pattern path_: a pattern with more
+than one argument. Our example JSON objects contain a "tracking_summary"
+sub-object with a "total" field:
+
+    [
+      {
+        "author": "Bundesbank",
+        "maintainer": "Rufus Pollock",
+        "tracking_summary": {
+          "total": 456,
+          "recent": 19
+        },
+        ...
+      },
+      ...
+    ]
+
+To extract this field into a third column:
+
+```bash
+losser --column "Data Owner" --pattern '^author$' \
+    --columm Maintainer --pattern '^maintainer$' \
+    --column "Total Views" --pattern '^tracking summary$' "total" \
+    < input.json
+```
+
+<table>
+  <tr>
+    <th>Data Owner</th>
+    <th>Maintainer</th>
+    <th>Total Views</th>
+  </tr>
+  <tr>
+    <td>Bundesbank</td>
+    <td>Rufus Pollock</td>
+    <td>456</td>
+  </tr>
+  <tr>
+    <td>Lucy Chambers</td>
+    <td>Someone Else</td>
+    <td>200</td>
+  </tr>
+  <tr>
+    <td>...</td>
+  </tr>
+</table>
+
+A pattern path can take any number of arguments to recurse into any number
+depth sub-objects.
+
+
+### Finding Fields in Sub-Lists
+
+If one of the patterns in a pattern path lands on a sub-list losser will
+iterate over the list and recurse on each item in the list, querying the rest
+of the pattern path against each item and eventually returning a list of
+results.
+
+Our example objects contain lists of "resource" objects each with a "format"
+field, among others:
+
+    [
+      {
+        "author": "Bundesbank",
+        "maintainer": "Rufus Pollock",
+        "resources": [
+          {
+            "description": "CSV file extracted and cleaned from source excel.",
+            "format": "CSV",
+            ...
+          },
+          {
+            "description": "Original Excel version.",
+            "format": "XLS",
+            ...
+          },
+        ],
+        ...
+      },
+      ...
+    ]
+
+To extract each of the format fields from each dataset:
+
+```bash
+losser --column "Data Owner" --pattern '^author$' \
+    --columm Maintainer --pattern '^maintainer$' \
+    --column "Total Views" --pattern '^tracking summary$' "total" \
+    --column Formats --pattern '^resources$' 'format' \
+    < input.json
+```
+
+<table>
+  <tr>
+    <th>Data Owner</th>
+    <th>Maintainer</th>
+    <th>Total Views</th>
+  </tr>
+  <tr>
+    <td>Bundesbank</td>
+    <td>Rufus Pollock</td>
+    <td>456</td>
+    <td>CSV, XLS</td>
+  </tr>
+  <tr>
+    <td>Lucy Chambers</td>
+    <td>Someone Else</td>
+    <td>200</td>
+    <td>CSV, CSV, JSON, HTML</td>
+  </tr>
+  <tr>
+    <td>...</td>
+  </tr>
+</table>
+
+List of results are combined into **quoted, comma-separated lists** in the
+output CSV.
+
+To remove duplicates from these lists pass the `--deduplicate` option to the
+column: `--column Formats --pattern '^resources$' 'format' --deduplicate`.
+
+Column options like `--pattern`, `--deduplicate` etc apply to the preceding
+`--column`. See `losser --help` for all the options.
+
+A column query may return a nested list of results, for example if the input
+object contains a list of lists. When this happens the nested list is flattened
+in the output CSV.
+
+
+### Matching Multiple Keys with One Pattern
+
+If a pattern matches more than one key in an object, losser will recurse on
+each matching key's value, querying the rest of the pattern path against each
+value and eventually returning a list of values.
+
+To give a simple example, the pattern `license` will match a number of keys in
+our example objects (`license_title`, `license_id` and `license_url`), so
+this:
+
+```bash
+losser --column "License" --pattern "license" < input.json
+```
+
+Will produce this:
+
+<table>
+  <tr>
+    <th>License</th>
+  </tr>
+  <tr>
+    <td>odc-pddl, Open Data Commons Public Domain Dedication and License (PDDL), http://www.opendefinition.org/licenses/odc-pddl</td>
+  </tr>
+  <tr>
+    <td>cc-by, Creative Commons Attribution, http://www.opendefinition.org/licenses/cc-by</td>
+  </tr>
+  <tr>
+    <td>...</td>
+  </tr>
+</table>
+
+
+### Finding Inconsistently Named Keys
+
+Different objects in the input JSON may use different keys for the same field.
+For example an "Update Frequency" field that appears as "Update", "update",
+"Updated", "Update Frequency", etc in different objects.
+
+To catch all of these fields and put them into a single column in the output
+CSV, just supply a pattern that matches all of them:
+
+```
+losser --column "Update Frequency" --pattern "^update.*" --unique < input.json
+```
+
+In this case we're assuming that each object has only one key that matches our
+pattern: we don't want any lists of matching values in our CSV cells.
+To enforce this we pass the `--unique` option to the column, which will crash
+if more than one key matches the pattern.
+
+By default pattern matching is case-insensitive and keys are stripped of
+leading and trailing whitespace before matching. To match case-sensitively
+and without stripping whitespace, pass the `--case-sensitive --strip false`
+options to the column.
+
+
+### Using a columns.json File
+
+You can specify your columns in a `columns.json` file, instead of giving them
+on the command line. For example:
+
+```json
+{
+  "Data Owner": {
+    "pattern": "^author$"
+  },
+  "Maintainer": {
+    "pattern": "^maintainer$"
+  },
+  "Total Views": {
+    "pattern": ["^tracking_summary$", "total"]
+  },
+  "Formats": {
+    "pattern": ["^resources$", "format"],
+    "deduplicate": true
+  }
+}
+```
+
+Then to use the file do:
+
+```bash
+losser --columns columns.json < input.json
+```
+
+
+### Using Losser from Python
+
+To call losser from Python:
+
+```python
+import losser.losser as losser
+table = losser.table(input_objects, columns)
+```
+
+`input_objects` should be a list of dicts (e.g. from reading a list of JSON
+objects with `json.loads()`).
+
+`columns` can be dict of dicts in the same format as the `columns.json` file
+above, or the path to a `columns.json` file.
+
+`table()` will return the output CSV as a list of dicts or as a UTF8-encoded,
+CSV-formatted string (if you pass `csv=True`).
+
+
+#### Inheriting Losser's Command Line Interface
 
 Losser's command line interface with `--column` and related arguments is fairly
 complicated to implement. You may want to offer the same command line features
@@ -375,14 +380,18 @@ See [ckanapi-exporter](https://github.com/ckan/ckanapi-exporter) for a
 working example.
 
 
-Running the Tests
------------------
+Development
+-----------
 
-First activate your virtualenv then install the dev requirements:
+To install losser for development, create and activate a Python virtual
+environment then do:
 
+    git clone https://github.com/ckan/losser.git
+    cd losser
+    python setup.py develop
     pip install -r dev-requirements.txt
 
-Then to run the tests do:
+To run the tests do:
 
     nosetests
 

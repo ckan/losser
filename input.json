@@ -1,0 +1,1043 @@
+[
+    {
+        "license_title": "Open Data Commons Public Domain Dedication and License (PDDL)",
+        "maintainer": "Rufus Pollock",
+        "relationships_as_object": [ ],
+        "private": false,
+        "maintainer_email": "",
+        "revision_timestamp": "2014-10-16T15:56:49.738160",
+        "id": "f751020e-28d3-4b30-be9c-144ffb8d5179",
+        "metadata_created": "2014-04-21T08:01:48.308570",
+        "metadata_modified": "2014-10-16T15:56:49.740459",
+        "author": "Bundesbank",
+        "author_email": "",
+        "state": "active",
+        "version": "",
+        "creator_user_id": "ba4c807a-1402-4117-a7cc-b308b01774af",
+        "type": "dataset",
+        "resources": [
+            {
+                "resource_group_id": "562562de-2616-4dd9-a1ff-7b02863cb662",
+                "cache_last_updated": null,
+                "revision_timestamp": "2014-09-17T12:56:48.224287",
+                "webstore_last_updated": "2014-09-17T12:56:48.164571",
+                "id": "f95dcf96-eb04-4aa0-ae4b-a45f71a9e52f",
+                "size": null,
+                "state": "active",
+                "hash": "ecff444eceda78143a7d8de761b9b45a",
+                "description": "CSV file extracted and cleaned from source excel.\r\n",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 456,
+                    "recent": 19
+                },
+                "last_modified": null,
+                "url_type": "",
+                "mimetype": null,
+                "cache_url": null,
+                "name": "CSV file extracted and cleaned from source excel",
+                "created": "2014-09-17T12:56:39.422519",
+                "url": "https://raw.github.com/datasets/gold-prices/master/data/data.csv",
+                "webstore_url": "active",
+                "mimetype_inner": null,
+                "position": 0,
+                "revision_id": "afee7141-8852-4793-ac46-06ed84caba2f",
+                "resource_type": null
+            },
+            {
+                "resource_group_id": "562562de-2616-4dd9-a1ff-7b02863cb662",
+                "cache_last_updated": null,
+                "revision_timestamp": "2014-10-16T13:15:20.448740",
+                "webstore_last_updated": null,
+                "id": "ff684743-60f2-4bad-86db-27fde351fcc1",
+                "size": null,
+                "state": "active",
+                "hash": "",
+                "description": "Original Excel version",
+                "format": "XLS",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": null,
+                "url_type": null,
+                "mimetype": null,
+                "cache_url": null,
+                "name": "Gold Price 2",
+                "created": "2014-10-16T13:10:52.308861",
+                "webstore_url": null,
+                "mimetype_inner": null,
+                "position": 1,
+                "revision_id": "cdd465fe-65c7-4bf1-bd57-a7fbc150468c",
+                "resource_type": null
+            }
+        ],
+        "num_resources": 2,
+        "tags": [
+            {
+                "vocabulary_id": null,
+                "display_name": "economics",
+                "name": "economics",
+                "revision_timestamp": "2014-04-21T08:01:48.308570",
+                "state": "active",
+                "id": "4a03e120-432d-4d07-85a1-6f0cdac6e13e"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "gold",
+                "name": "gold",
+                "revision_timestamp": "2014-04-21T08:01:48.308570",
+                "state": "active",
+                "id": "5c04eb9c-ade6-46e1-b242-216107e68c3a"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "price",
+                "name": "price",
+                "revision_timestamp": "2014-04-21T08:01:48.308570",
+                "state": "active",
+                "id": "58aa02a7-1827-440d-b693-61b97f90053b"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "time-series",
+                "name": "time-series",
+                "revision_timestamp": "2014-04-21T08:01:48.308570",
+                "state": "active",
+                "id": "2a13093b-f835-4fb7-a6f6-b4741892847e"
+            }
+        ],
+        "tracking_summary": {
+            "total": 0,
+            "recent": 0
+        },
+        "groups": [
+            {
+                "display_name": "Data Explorer Examples",
+                "description": "This group contains various real datasets that show CKAN's data previewer in action. The previewer shows a configurable grid view of tabular data, plots columns of data on a graph, and shows geo-coded data on an interactive map. It can also preview image files and web pages.",
+                "image_display_url": "http://farm8.staticflickr.com/7129/7041988029_411d985015_c.jpg",
+                "title": "Data Explorer Examples",
+                "id": "be9ff477-9547-4dec-85b3-ced05068775e",
+                "name": "data-explorer"
+            }
+        ],
+        "license_id": "odc-pddl",
+        "relationships_as_subject": [ ],
+        "num_tags": 4,
+        "organization": null,
+        "name": "gold-prices",
+        "isopen": true,
+        "url": "http://www.bundesbank.de/statistik/statistik_zeitreihen.en.php?tr=www_s332_b01015_",
+        "notes": "*Mycobacterium tuberculosis*",
+        "owner_org": null,
+        "extras": [
+            {
+                "key": "created",
+                "value": "2008-10-07"
+            },
+            {
+                "key": "source",
+                "value": ""
+            }
+        ],
+        "license_url": "http://www.opendefinition.org/licenses/odc-pddl",
+        "title": "Gold Prices in London 1950-2008 (Monthly)",
+        "revision_id": "1b5e9678-d578-40fd-972c-68445f97e00a"
+    },
+    {
+        "license_title": "License Not Specified",
+        "maintainer": "",
+        "relationships_as_object": [ ],
+        "private": false,
+        "maintainer_email": "",
+        "revision_timestamp": "2014-04-21T10:40:23.916113",
+        "id": "015e0233-1f01-4439-98b5-cc9c5170282e",
+        "metadata_created": "2014-04-21T08:01:41.503118",
+        "metadata_modified": "2014-07-28T20:09:04.866499",
+        "author": "Lucy Chambers",
+        "author_email": "",
+        "state": "active",
+        "version": "",
+        "creator_user_id": "ba4c807a-1402-4117-a7cc-b308b01774af",
+        "type": "dataset",
+        "resources": [
+            {
+                "resource_group_id": "f444e121-136e-4bdd-b900-3dca465dfa0e",
+                "cache_last_updated": null,
+                "revision_timestamp": "2014-05-08T10:09:58.946797",
+                "webstore_last_updated": "2014-04-21T08:01:55.219712",
+                "id": "04127ad5-77e5-4a08-9f40-12d3c383e460",
+                "size": null,
+                "state": "active",
+                "hash": "1868d87eb6e3c26238a0d42e46f63f06",
+                "description": "Revised CSV for import",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": null,
+                "url_type": null,
+                "openspending_hint": "data",
+                "mimetype": "",
+                "cache_url": null,
+                "name": "",
+                "created": "2014-04-21T08:01:41.579322",
+                "url": "http://mk.ucant.org/info/data/adur.csv",
+                "webstore_url": "active",
+                "mimetype_inner": "",
+                "position": 0,
+                "revision_id": "bf3d8ca4-30c6-410d-960d-9fdf56fc93d0",
+                "resource_type": "file"
+            },
+            {
+                "resource_group_id": "f444e121-136e-4bdd-b900-3dca465dfa0e",
+                "cache_last_updated": null,
+                "revision_timestamp": "2014-05-08T10:09:58.946797",
+                "webstore_last_updated": "2014-05-06T03:10:48.602339",
+                "id": "281dffa6-ea9b-4446-be41-05dced06591f",
+                "size": null,
+                "state": "active",
+                "hash": "b19731f6a08c98079adfaeffadb719f5",
+                "description": "Adur District Council April 2009",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": null,
+                "url_type": null,
+                "mimetype": "",
+                "cache_url": null,
+                "name": "",
+                "created": "2014-04-21T08:01:41.579275",
+                "url": "http://ckan.net/storage/f/file/3ffdcd42-5c63-4089-84dd-c23876259973",
+                "webstore_url": "active",
+                "mimetype_inner": "",
+                "position": 1,
+                "revision_id": "bf3d8ca4-30c6-410d-960d-9fdf56fc93d0",
+                "resource_type": "file"
+            },
+            {
+                "resource_group_id": "f444e121-136e-4bdd-b900-3dca465dfa0e",
+                "cache_last_updated": null,
+                "revision_timestamp": "2014-05-08T10:09:58.946797",
+                "webstore_last_updated": null,
+                "id": "6cce3936-b169-4d12-82ba-65fcb79734a0",
+                "size": null,
+                "state": "active",
+                "hash": "",
+                "description": "Mapping Metadata for Adur",
+                "format": "JSON",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": null,
+                "url_type": null,
+                "openspending_hint": "model",
+                "mimetype": "",
+                "cache_url": null,
+                "name": "",
+                "created": "2014-04-21T08:01:41.579310",
+                "url": "http://ckan.net/storage/f/file/c8ce520c-c2e6-463a-99a3-ad24b023ccb4",
+                "webstore_url": null,
+                "mimetype_inner": "",
+                "position": 2,
+                "revision_id": "bf3d8ca4-30c6-410d-960d-9fdf56fc93d0",
+                "resource_type": "file"
+            },
+            {
+                "resource_group_id": "f444e121-136e-4bdd-b900-3dca465dfa0e",
+                "cache_last_updated": null,
+                "revision_timestamp": "2014-07-28T20:09:04.864795",
+                "webstore_last_updated": null,
+                "id": "f1d75078-e024-4540-84e2-e30bdc4b8be0",
+                "size": null,
+                "state": "active",
+                "hash": "",
+                "description": "description",
+                "format": "HTML",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": null,
+                "url_type": null,
+                "mimetype": null,
+                "cache_url": null,
+                "name": "example",
+                "created": "2014-07-28T20:09:04.923894",
+                "url": "http://dot.com",
+                "webstore_url": null,
+                "mimetype_inner": null,
+                "position": 3,
+                "revision_id": "f09776c5-28ca-43a2-ba3a-f754141c1e70",
+                "resource_type": null
+            }
+        ],
+        "num_resources": 4,
+        "tags": [
+            {
+                "vocabulary_id": null,
+                "display_name": "country-uk",
+                "name": "country-uk",
+                "revision_timestamp": "2014-04-21T08:01:41.503118",
+                "state": "active",
+                "id": "00b03026-dfbd-4d5c-87b8-ee7a087052cb"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "date-2009",
+                "name": "date-2009",
+                "revision_timestamp": "2014-04-21T08:01:41.503118",
+                "state": "active",
+                "id": "1e5709f3-8d4b-40ef-987f-b4f292dce0cb"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "openspending",
+                "name": "openspending",
+                "revision_timestamp": "2014-04-21T08:01:41.503118",
+                "state": "active",
+                "id": "b880e952-fb9f-486f-bfbc-286b6162ffd9"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "regional",
+                "name": "regional",
+                "revision_timestamp": "2014-04-21T08:01:41.503118",
+                "state": "active",
+                "id": "39594190-41eb-49f2-b804-e42894823c9b"
+            }
+        ],
+        "tracking_summary": {
+            "total": 200,
+            "recent": 12
+        },
+        "groups": [
+            {
+                "display_name": "Data Explorer Examples",
+                "description": "This group contains various real datasets that show CKAN's data previewer in action. The previewer shows a configurable grid view of tabular data, plots columns of data on a graph, and shows geo-coded data on an interactive map. It can also preview image files and web pages.",
+                "image_display_url": "http://farm8.staticflickr.com/7129/7041988029_411d985015_c.jpg",
+                "title": "Data Explorer Examples",
+                "id": "be9ff477-9547-4dec-85b3-ced05068775e",
+                "name": "data-explorer"
+            }
+        ],
+        "license_id": "notspecified",
+        "relationships_as_subject": [ ],
+        "num_tags": 4,
+        "organization": null,
+        "name": "adur_district_spending",
+        "isopen": false,
+        "url": "http://www.spotlightonspend.org.uk/Downloads/1038",
+        "notes": "From Spikes Cavell, Spotlight on Spend. For Ardur, records from April 2009-March 2010 are currently available (2011-008-04) ",
+        "owner_org": null,
+        "extras": [
+            {
+                "key": "spatial",
+                "value": "{ \"type\": \"Polygon\", \"coordinates\": [ [ [-0.3715, 50.8168],[-0.3715, 50.8747], [-0.2155, 50.8747], [-0.2155, 50.8168], [-0.3715, 50.8168] ] ] }"
+            },
+            {
+                "key": "spatial-text",
+                "value": "Adur, West Sussex, South East England, England, United Kingdom"
+            }
+        ],
+        "title": "UK: Adur District Council Spending Data",
+        "revision_id": "62467531-c0c5-4620-b841-cc631babf382"
+    },
+    {
+        "license_title": "License Not Specified",
+        "maintainer": "",
+        "relationships_as_object": [ ],
+        "private": false,
+        "maintainer_email": "",
+        "revision_timestamp": "2014-04-23T06:39:15.135366",
+        "id": "85db9067-2902-4ef7-b043-3008a309fdd6",
+        "metadata_created": "2014-04-21T08:02:02.599472",
+        "metadata_modified": "2014-04-23T06:39:15.136939",
+        "author": "",
+        "author_email": "",
+        "state": "active",
+        "version": "",
+        "creator_user_id": "ba4c807a-1402-4117-a7cc-b308b01774af",
+        "type": "dataset",
+        "resources": [
+            {
+                "resource_group_id": "dd3e642b-67a1-43f2-95f3-a982c46f32d1",
+                "cache_last_updated": null,
+                "revision_timestamp": "2014-04-21T08:02:13.472940",
+                "webstore_last_updated": "2014-04-21T08:02:13.339556",
+                "id": "f6331f99-51f6-44d9-95b9-b20f3b74f360",
+                "size": null,
+                "state": "active",
+                "hash": "6bfbc5baa6dbc815dd81753689a37e6b",
+                "description": "District Names",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": null,
+                "url_type": null,
+                "mimetype": "",
+                "cache_url": null,
+                "name": "",
+                "created": "2014-04-21T08:02:02.670817",
+                "url": "http://afghanistanelectiondata.org/sites/default/files/district_centerpoints.csv",
+                "webstore_url": "active",
+                "mimetype_inner": "",
+                "position": 0,
+                "revision_id": "b5505a91-4c3a-47ca-bd3e-452902b73e17",
+                "resource_type": ""
+            }
+        ],
+        "num_resources": 1,
+        "tags": [
+            {
+                "vocabulary_id": null,
+                "display_name": "country-afghanistan",
+                "name": "country-afghanistan",
+                "revision_timestamp": "2014-04-21T08:02:02.599472",
+                "state": "active",
+                "id": "5f73636b-cf48-4aa1-a2de-9d535625acff"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "election",
+                "name": "election",
+                "revision_timestamp": "2014-04-21T08:02:02.599472",
+                "state": "active",
+                "id": "6d24bacc-6b28-41cf-839b-fe86a1092a8e"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "politics",
+                "name": "politics",
+                "revision_timestamp": "2014-04-21T08:02:02.599472",
+                "state": "active",
+                "id": "8496cc20-5927-416d-9f89-84d6c1baa8cd"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "poll",
+                "name": "poll",
+                "revision_timestamp": "2014-04-21T08:02:02.599472",
+                "state": "active",
+                "id": "dd1413e2-4642-42ac-b320-2aece82ad032"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "transparency",
+                "name": "transparency",
+                "revision_timestamp": "2014-04-21T08:02:02.599472",
+                "state": "active",
+                "id": "a97c4aa6-e910-404f-9662-ed80a10e91d9"
+            }
+        ],
+        "tracking_summary": {
+            "total": 0,
+            "recent": 0
+        },
+        "groups": [
+            {
+                "display_name": "Data Explorer Examples",
+                "description": "This group contains various real datasets that show CKAN's data previewer in action. The previewer shows a configurable grid view of tabular data, plots columns of data on a graph, and shows geo-coded data on an interactive map. It can also preview image files and web pages.",
+                "image_display_url": "http://farm8.staticflickr.com/7129/7041988029_411d985015_c.jpg",
+                "title": "Data Explorer Examples",
+                "id": "be9ff477-9547-4dec-85b3-ced05068775e",
+                "name": "data-explorer"
+            },
+            {
+                "display_name": "Geospatial Data Explorer examples",
+                "description": "CKAN can plot both latitude and longitude as well as GeoJSON on a map. For more information, see http://ckan.org/features/geospatial/",
+                "image_display_url": "http://farm6.staticflickr.com/5117/6944276022_06ea83e528.jpg",
+                "title": "Geospatial Data Explorer examples",
+                "id": "40bee65d-8848-493c-bdca-f6f19e0b5635",
+                "name": "geo-examples"
+            }
+        ],
+        "license_id": "notspecified",
+        "relationships_as_subject": [ ],
+        "num_tags": 5,
+        "organization": null,
+        "name": "afghanistan-election-data",
+        "isopen": false,
+        "url": "http://afghanistanelectiondata.org/",
+        "notes": "From website - Welcome to AfghanistanElectionData.org. This website, created by the National Democratic Institute (NDI) in partnership with Development Seed, a Washington, D.C.-based online communications consultancy, is designed to make data from the August 20, 2009, Afghanistan presidential election accessible and transparent. The reports below provide examples of the analysis that this website facilitates.We have provided one sample csv file as there is no download for the whole dataset. There are many more files on the website.",
+        "owner_org": null,
+        "extras": [
+            {
+                "key": "spatial",
+                "value": "{ \"type\": \"Polygon\", \"coordinates\": [ [ [74.898827, 29.394159],[74.898827, 38.453041], [60.50526, 38.453041], [60.50526, 29.394159], [74.898827, 29.394159] ] ] }"
+            },
+            {
+                "key": "spatial-text",
+                "value": "Afghanistan"
+            }
+        ],
+        "title": "Afghanistan Election Districts",
+        "revision_id": "ef2ae318-94cb-4333-9c1e-08dcd0fb295a"
+    },
+    {
+        "license_title": "",
+        "maintainer": "",
+        "relationships_as_object": [ ],
+        "private": false,
+        "maintainer_email": "",
+        "revision_timestamp": "2014-04-21T10:40:23.498310",
+        "id": "70407a91-61d8-49d6-a3c8-4494cbbc3a21",
+        "metadata_created": "2014-04-21T08:01:54.558200",
+        "metadata_modified": "2014-04-21T10:40:23.501996",
+        "author": "",
+        "author_email": "",
+        "state": "active",
+        "version": "",
+        "creator_user_id": "ba4c807a-1402-4117-a7cc-b308b01774af",
+        "type": "dataset",
+        "resources": [
+            {
+                "resource_group_id": "f262a032-d918-4763-a130-ac94e2bf3304",
+                "cache_last_updated": null,
+                "revision_timestamp": "2014-04-21T08:02:07.274000",
+                "webstore_last_updated": "2014-04-21T08:02:07.040983",
+                "id": "57e9e5e5-c659-4f08-af32-90ebef881fe5",
+                "size": "1013",
+                "state": "active",
+                "hash": "032098240e69872f3e4f1c8b17ee2db2",
+                "description": "US National Foreclosure Statistics - By State - January 2012 ",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": "2012-03-10T16:58:54.270508",
+                "url_type": null,
+                "mimetype": "text/csv",
+                "cache_url": null,
+                "name": "1-2012-Foreclosures-by-State",
+                "created": "2014-04-21T08:01:54.739132",
+                "url": "https://commondatastorage.googleapis.com/ckannet-storage/2012-03-10T165422/us.foreclosures.jan.2012.by.state.csv",
+                "webstore_url": "active",
+                "mimetype_inner": "",
+                "position": 0,
+                "revision_id": "52911274-9b88-4435-b915-e3cd66c77662",
+                "resource_type": "file.upload"
+            },
+            {
+                "resource_group_id": "f262a032-d918-4763-a130-ac94e2bf3304",
+                "cache_last_updated": null,
+                "revision_timestamp": "2014-04-21T08:02:14.990594",
+                "webstore_last_updated": "2014-04-21T08:02:14.838030",
+                "id": "7c959599-82d4-4ab7-99fe-8c7da3d601b2",
+                "size": "450684",
+                "state": "active",
+                "hash": "ecedd508c68d70e513f7099aed0e462b",
+                "description": "US National Foreclosure Statistics - By County - January 2012",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": "2012-03-10T16:58:54.525724",
+                "url_type": null,
+                "mimetype": "text/csv",
+                "cache_url": null,
+                "name": "version control - old 1-2012-Foreclosures-by-County",
+                "created": "2014-04-21T08:01:54.739167",
+                "url": "https://commondatastorage.googleapis.com/ckannet-storage/2012-03-10T165700/us.foreclosures.jan.2012.by.county.csv",
+                "webstore_url": "active",
+                "mimetype_inner": "",
+                "position": 1,
+                "revision_id": "00c6f1f0-d9a9-4e0b-a32c-2d3b0e6aa8b6",
+                "resource_type": "file.upload"
+            },
+            {
+                "resource_group_id": "f262a032-d918-4763-a130-ac94e2bf3304",
+                "cache_last_updated": null,
+                "revision_timestamp": "2014-04-21T08:02:13.913367",
+                "webstore_last_updated": "2014-04-21T08:02:13.695023",
+                "id": "a716759d-7950-415b-954c-c5f84f9bc65e",
+                "size": "164202",
+                "state": "active",
+                "hash": "b4b406def620d1fadf0045055ede239b",
+                "description": "Final version of US National Foreclosure Statistics - By County - January 2012",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": "2012-03-10T17:04:18.716252",
+                "url_type": null,
+                "mimetype": "text/csv",
+                "cache_url": null,
+                "name": "1-2012-Foreclosures-by-County",
+                "created": "2014-04-21T08:01:54.739179",
+                "url": "https://commondatastorage.googleapis.com/ckannet-storage/2012-03-10T170330/us.foreclosures.jan.2012.by.county.csv",
+                "webstore_url": "active",
+                "mimetype_inner": "",
+                "position": 2,
+                "revision_id": "6a1543b2-d2fe-4a56-8967-96913abde158",
+                "resource_type": "file.upload"
+            }
+        ],
+        "num_resources": 3,
+        "tags": [
+            {
+                "vocabulary_id": null,
+                "display_name": "USA",
+                "name": "USA",
+                "revision_timestamp": "2014-04-21T08:01:54.558200",
+                "state": "active",
+                "id": "ed2f436e-411d-4c37-a6aa-8e78141f9aa6"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "banks",
+                "name": "banks",
+                "revision_timestamp": "2014-04-21T08:01:54.558200",
+                "state": "active",
+                "id": "118f0401-c5a9-411a-8f7c-646fb4800335"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "credit",
+                "name": "credit",
+                "revision_timestamp": "2014-04-21T08:01:54.558200",
+                "state": "active",
+                "id": "f583d351-de18-47f1-95e5-2bbba20f64d3"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "foreclosure",
+                "name": "foreclosure",
+                "revision_timestamp": "2014-04-21T08:01:54.558200",
+                "state": "active",
+                "id": "028e674f-a7e8-424e-9cf4-cf20a571d281"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "foreclosures",
+                "name": "foreclosures",
+                "revision_timestamp": "2014-04-21T08:01:54.558200",
+                "state": "active",
+                "id": "67a16b11-e746-43f3-bd79-4be0b5399d16"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "homes",
+                "name": "homes",
+                "revision_timestamp": "2014-04-21T08:01:54.558200",
+                "state": "active",
+                "id": "d189d6ae-9d61-4483-a633-a01c0c033613"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "housing",
+                "name": "housing",
+                "revision_timestamp": "2014-04-21T08:01:54.558200",
+                "state": "active",
+                "id": "4d9e19d2-b715-4c57-8935-a1a43a105e06"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "mortgage",
+                "name": "mortgage",
+                "revision_timestamp": "2014-04-21T08:01:54.558200",
+                "state": "active",
+                "id": "3e4afadf-a9ed-4afd-8391-109db134a015"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "mortgages",
+                "name": "mortgages",
+                "revision_timestamp": "2014-04-21T08:01:54.558200",
+                "state": "active",
+                "id": "01e4daca-f83a-4333-985c-4be653459be1"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "occupy",
+                "name": "occupy",
+                "revision_timestamp": "2014-04-21T08:01:54.558200",
+                "state": "active",
+                "id": "c270891f-0b5c-4c26-9b38-3784d55567bc"
+            }
+        ],
+        "tracking_summary": {
+            "total": 0,
+            "recent": 0
+        },
+        "groups": [
+            {
+                "display_name": "Data Explorer Examples",
+                "description": "This group contains various real datasets that show CKAN's data previewer in action. The previewer shows a configurable grid view of tabular data, plots columns of data on a graph, and shows geo-coded data on an interactive map. It can also preview image files and web pages.",
+                "image_display_url": "http://farm8.staticflickr.com/7129/7041988029_411d985015_c.jpg",
+                "title": "Data Explorer Examples",
+                "id": "be9ff477-9547-4dec-85b3-ced05068775e",
+                "name": "data-explorer"
+            }
+        ],
+        "license_id": "",
+        "relationships_as_subject": [ ],
+        "num_tags": 10,
+        "organization": null,
+        "name": "us-national-foreclosure-statistics-january-2012",
+        "isopen": false,
+        "url": "",
+        "notes": "County data: http://www.npr.org/templates/story/story.php?storyId=111494514State data: http://statehealthfacts.org/comparetable.jsp?ind=649&cat=1",
+        "owner_org": null,
+        "extras": [ ],
+        "title": "US National Foreclosure Statistics January 2012",
+        "revision_id": "460d5ae7-6f14-4dd8-b38d-6c02ed645c82"
+    },
+    {
+        "license_title": "Creative Commons Attribution",
+        "maintainer": "",
+        "relationships_as_object": [ ],
+        "private": false,
+        "maintainer_email": "",
+        "revision_timestamp": "2013-05-13T12:05:48.277251",
+        "id": "93536907-16f7-44d2-b758-c6e86723a953",
+        "metadata_created": "2013-05-13T09:26:30.711524",
+        "metadata_modified": "2014-02-25T12:16:13.636102",
+        "author": "",
+        "author_email": "",
+        "state": "active",
+        "version": "",
+        "creator_user_id": null,
+        "type": "dataset",
+        "resources": [
+            {
+                "resource_group_id": "ea981d6a-171d-461a-a29b-59fd4e1cffab",
+                "cache_last_updated": null,
+                "revision_timestamp": "2014-02-25T12:16:13.634392",
+                "webstore_last_updated": "2013-05-13T09:28:50.833379",
+                "id": "0c2bd47a-6ac5-412e-a337-1b45a952e07e",
+                "size": "1081957",
+                "state": "active",
+                "hash": "f4f94ec6f3297e608a562434e52a3993a3c3f7e4",
+                "description": "Newcastle City Council spending data over £500. Data is published monthly and shows who was paid, how much was paid, and what this was for.",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": "2012-03-13T22:04:31.993982",
+                "url_type": null,
+                "mimetype": "text/csv",
+                "cache_url": null,
+                "name": "Payments over £500 - December 2011",
+                "created": "2013-05-13T09:26:30.812319",
+                "url": "http://www.newcastle.gov.uk/sites/drupalncc.newcastle.gov.uk/files/wwwfileroot/your-council/local_transparency/december_2011.csv",
+                "webstore_url": "active",
+                "mimetype_inner": null,
+                "position": 0,
+                "revision_id": "f6ae1525-f476-4284-9aea-e34685361780",
+                "resource_type": "file"
+            },
+            {
+                "resource_group_id": "ea981d6a-171d-461a-a29b-59fd4e1cffab",
+                "cache_last_updated": null,
+                "revision_timestamp": "2013-05-13T09:29:09.518705",
+                "webstore_last_updated": "2013-05-13T09:29:09.396115",
+                "id": "52a0c92e-99a3-427d-93a6-73ef5cdccc11",
+                "size": "1266181",
+                "state": "active",
+                "hash": "13d878785798a1881ca9afae755668fc2894fa3e",
+                "description": "November 2011",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": "2012-10-09T05:20:37.376939",
+                "url_type": null,
+                "mimetype": "text/csv",
+                "cache_url": null,
+                "name": "November 2011",
+                "created": "2013-05-13T09:26:30.812360",
+                "url": "http://www.newcastle.gov.uk/sites/drupalncc.newcastle.gov.uk/files/wwwfileroot/your-council/local_transparency/november_2011.csv",
+                "webstore_url": "active",
+                "mimetype_inner": null,
+                "position": 1,
+                "revision_id": "747ad00e-a6aa-4a33-aa26-84a5ca1731e5",
+                "resource_type": "file"
+            },
+            {
+                "resource_group_id": "ea981d6a-171d-461a-a29b-59fd4e1cffab",
+                "cache_last_updated": null,
+                "revision_timestamp": "2013-08-22T16:07:33.610466",
+                "webstore_last_updated": "2013-08-22T16:07:33.455531",
+                "id": "1d1c9089-7037-48a3-a70d-fbecf146238f",
+                "size": "850440",
+                "state": "active",
+                "hash": "93762ff3919569fb9280de38ad62dff8c2a1473d",
+                "description": "October 2011",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": "2012-03-13T22:04:28.872581",
+                "url_type": null,
+                "mimetype": "text/csv",
+                "cache_url": null,
+                "name": "October 2011",
+                "created": "2013-05-13T09:26:30.812371",
+                "url": "http://www.newcastle.gov.uk/sites/drupalncc.newcastle.gov.uk/files/wwwfileroot/your-council/local_transparency/october_2011.csv",
+                "webstore_url": "active",
+                "mimetype_inner": null,
+                "position": 2,
+                "revision_id": "0c8c9e67-6e65-4f0d-ac2c-0bf544934feb",
+                "resource_type": "file"
+            },
+            {
+                "resource_group_id": "ea981d6a-171d-461a-a29b-59fd4e1cffab",
+                "cache_last_updated": null,
+                "revision_timestamp": "2013-08-22T16:07:38.644789",
+                "webstore_last_updated": "2013-08-22T16:07:38.498652",
+                "id": "ff9038ef-41fd-4b00-9b1e-e942fbdaaf25",
+                "size": "764773",
+                "state": "active",
+                "hash": "1a7a576dfd490153f6097602bb64a2312079aa47",
+                "description": "September 2011",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": "2012-06-13T07:57:00.966643",
+                "url_type": null,
+                "mimetype": "text/csv",
+                "cache_url": null,
+                "name": "September 2011",
+                "created": "2012-06-06T15:54:48.643419",
+                "url": "http://www.newcastle.gov.uk/sites/drupalncc.newcastle.gov.uk/files/wwwfileroot/your-council/local_transparency/september_2011.csv",
+                "webstore_url": "active",
+                "mimetype_inner": null,
+                "position": 3,
+                "revision_id": "a4ce418f-3c20-44f2-b152-c88aa96097c8",
+                "resource_type": "file"
+            },
+            {
+                "resource_group_id": "ea981d6a-171d-461a-a29b-59fd4e1cffab",
+                "cache_last_updated": null,
+                "revision_timestamp": "2013-05-13T09:31:09.841549",
+                "webstore_last_updated": "2013-05-13T09:31:09.772920",
+                "id": "d51c9bd4-8256-4289-bdd7-962f8572efb0",
+                "size": "1080880",
+                "state": "active",
+                "hash": "224ba4b7482d3cdd7e6b2373679a9cfaf8eb8dac",
+                "description": "",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": "2012-08-14T12:39:35.638235",
+                "url_type": null,
+                "mimetype": "text/csv",
+                "cache_url": null,
+                "name": "January 2012",
+                "created": "2012-08-14T12:39:24.519707",
+                "url": "http://www.newcastle.gov.uk/sites/drupalncc.newcastle.gov.uk/files/wwwfileroot/your-council/local_transparency/january_2012.csv",
+                "webstore_url": "active",
+                "mimetype_inner": null,
+                "position": 4,
+                "revision_id": "ac8a950b-9bb3-4381-ad8e-7e82a712b698",
+                "resource_type": "file"
+            },
+            {
+                "resource_group_id": "ea981d6a-171d-461a-a29b-59fd4e1cffab",
+                "cache_last_updated": null,
+                "revision_timestamp": "2013-05-13T09:32:57.330117",
+                "webstore_last_updated": "2013-05-13T09:32:57.266143",
+                "id": "5b958b29-a399-41aa-86ff-1d198a124140",
+                "size": "951982",
+                "state": "active",
+                "hash": "4cd5541587fe172ceaf59dc941e00b755ff1bdb5",
+                "description": "",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": "2012-08-14T12:47:35.250641",
+                "url_type": null,
+                "mimetype": "text/csv",
+                "cache_url": null,
+                "name": "February 2012",
+                "created": "2012-08-14T12:47:25.494670",
+                "url": "http://www.newcastle.gov.uk/sites/drupalncc.newcastle.gov.uk/files/wwwfileroot/your-council/local_transparency/february_2012.csv",
+                "webstore_url": "active",
+                "mimetype_inner": null,
+                "position": 5,
+                "revision_id": "3bc1c2a4-0451-4c6e-ba63-27632d58aa44",
+                "resource_type": "file"
+            },
+            {
+                "resource_group_id": "ea981d6a-171d-461a-a29b-59fd4e1cffab",
+                "cache_last_updated": null,
+                "revision_timestamp": "2013-08-22T16:08:16.424172",
+                "webstore_last_updated": "2013-08-22T16:08:16.249244",
+                "id": "31c65650-c338-42f6-b414-3092b609dd8a",
+                "size": "1226147",
+                "state": "active",
+                "hash": "a2fa2f76563827e30210c4e441825542f295c410",
+                "description": "",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": "2013-05-13T09:28:19.032212",
+                "url_type": null,
+                "mimetype": "text/csv",
+                "cache_url": null,
+                "name": "March 2012",
+                "created": "2012-10-31T06:08:02.146434",
+                "url": "http://www.newcastle.gov.uk/sites/drupalncc.newcastle.gov.uk/files/wwwfileroot/your-council/local_transparency/march_2012.csv",
+                "webstore_url": "active",
+                "mimetype_inner": null,
+                "position": 6,
+                "revision_id": "a733707e-3d0b-4435-af7c-69f3183dcc09",
+                "resource_type": "file"
+            },
+            {
+                "resource_group_id": "ea981d6a-171d-461a-a29b-59fd4e1cffab",
+                "cache_last_updated": null,
+                "revision_timestamp": "2013-05-13T09:28:39.477187",
+                "webstore_last_updated": "2013-05-13T09:28:39.421579",
+                "id": "b12b7665-8981-40a5-96e1-8b0a4874976f",
+                "size": "890644",
+                "state": "active",
+                "hash": "e30fc429ef6473624f4c2540b3cc3c9767730f30",
+                "description": "",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": "2012-10-31T06:26:47.811425",
+                "url_type": null,
+                "mimetype": "text/csv",
+                "cache_url": null,
+                "name": "April 2012",
+                "created": "2012-10-31T06:26:45.128729",
+                "url": "http://www.newcastle.gov.uk/sites/drupalncc.newcastle.gov.uk/files/wwwfileroot/your-council/local_transparency/april_2012.csv",
+                "webstore_url": "active",
+                "mimetype_inner": null,
+                "position": 7,
+                "revision_id": "6ca4f1fc-f7ef-4c25-8354-ea6d0adcdb35",
+                "resource_type": "file"
+            },
+            {
+                "resource_group_id": "ea981d6a-171d-461a-a29b-59fd4e1cffab",
+                "cache_last_updated": null,
+                "revision_timestamp": "2014-02-25T12:15:58.506145",
+                "webstore_last_updated": "2013-08-22T16:11:25.609104",
+                "id": "3a020cd9-44b7-474d-8d59-2e2200e8a378",
+                "size": "9590585",
+                "state": "active",
+                "hash": "e77cacdfb2bfd6bd1a8a67f52de215fe3f4dd9bc",
+                "description": "",
+                "format": "CSV",
+                "tracking_summary": {
+                    "total": 0,
+                    "recent": 0
+                },
+                "last_modified": "2012-12-09T14:45:06.642174",
+                "url_type": "upload",
+                "mimetype": "text/csv",
+                "cache_url": null,
+                "name": "Consolidated and cleaned up file for 2011",
+                "created": "2012-12-09T14:45:01.995978",
+                "url": "http://demo.ckan.org/dataset/93536907-16f7-44d2-b758-c6e86723a953/resource/3a020cd9-44b7-474d-8d59-2e2200e8a378/download/newcastleover5002011.csv",
+                "webstore_url": "active",
+                "mimetype_inner": null,
+                "position": 8,
+                "revision_id": "7ca552cb-9da0-45c1-b861-72a93170e9f6",
+                "resource_type": "file.upload"
+            }
+        ],
+        "num_resources": 9,
+        "tags": [
+            {
+                "vocabulary_id": null,
+                "display_name": "city-newcastle-upon-tyne",
+                "name": "city-newcastle-upon-tyne",
+                "revision_timestamp": "2013-05-13T09:26:30.711524",
+                "state": "active",
+                "id": "e27385a4-7c56-4a2e-baa9-2d0af9008c42"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "country.uk",
+                "name": "country.uk",
+                "revision_timestamp": "2013-05-13T09:26:30.711524",
+                "state": "active",
+                "id": "c764c466-9775-4815-af7a-4b0f2356e6c7"
+            },
+            {
+                "vocabulary_id": null,
+                "display_name": "spending",
+                "name": "spending",
+                "revision_timestamp": "2013-05-13T09:26:30.711524",
+                "state": "active",
+                "id": "b537203b-ff97-4ba1-853a-313669eba76a"
+            }
+        ],
+        "tracking_summary": {
+            "total": 0,
+            "recent": 0
+        },
+        "groups": [
+            {
+                "display_name": "Data Explorer Examples",
+                "description": "This group contains various real datasets that show CKAN's data previewer in action. The previewer shows a configurable grid view of tabular data, plots columns of data on a graph, and shows geo-coded data on an interactive map. It can also preview image files and web pages.",
+                "image_display_url": "http://farm8.staticflickr.com/7129/7041988029_411d985015_c.jpg",
+                "title": "Data Explorer Examples",
+                "id": "be9ff477-9547-4dec-85b3-ced05068775e",
+                "name": "data-explorer"
+            }
+        ],
+        "license_id": "cc-by",
+        "relationships_as_subject": [ ],
+        "num_tags": 3,
+        "organization": {
+            "description": "This is the department of statistics, based in Middle Earth",
+            "created": "2013-05-13T10:14:17.908270",
+            "title": "National Statistics Office",
+            "name": "national-statistics-office",
+            "revision_timestamp": "2013-05-13T10:14:17.860968",
+            "is_organization": true,
+            "state": "active",
+            "image_url": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR1oEnh7-7Im8x__mLEtStCjRBX2Tl_JXKZu757g2oAKpHNGSSK",
+            "revision_id": "05533cd7-26f8-4c34-b9cc-26d7e8a90b86",
+            "type": "organization",
+            "id": "20a2259c-04fb-400f-8f67-ad9ab9f91e28",
+            "approval_status": "approved"
+        },
+        "name": "newcastle-city-council-payments-over-500",
+        "isopen": true,
+        "url": "http://www.newcastle.gov.uk/your-council/local-transparency/payments-over-500",
+        "notes": "Newcastle City Council spending data over £500. Data is published monthly and shows who was paid, how much was paid, and what this was for.\r\n\r\nThis will include:\r\n\r\n* all items we purchase\r\n* payments we make to contractors carrying out work on our behalf\r\n* other spend we incur in carrying out our business.\r\n\r\nWhat will be excluded:\r\n\r\n* payments made to staff\r\n* housing benefit payments\r\n* sensitive social services information which could put\r\n* vulnerable individuals at risk\r\n* personal information, such as the names of individuals receiving payments\r\n* confidential information, such as council tax or business rate refund.\r\n\r\nThe site offers monthly spending reports, only a sample is included here.",
+        "owner_org": "20a2259c-04fb-400f-8f67-ad9ab9f91e28",
+        "extras": [
+            {
+                "key": "spatial",
+                "value": "{ \"type\": \"Polygon\", \"coordinates\": [ [ [-1.5308, 54.9588],[-1.5308, 55.0796], [-1.7753, 55.0796], [-1.7753, 54.9588], [-1.5308, 54.9588] ] ] }"
+            },
+            {
+                "key": "spatial-text",
+                "value": "Newcastle upon Tyne, North East England, England, United Kingdom"
+            }
+        ],
+        "license_url": "http://www.opendefinition.org/licenses/cc-by",
+        "title": "Newcastle City Council: Payments over £500",
+        "revision_id": "9802ecfb-9fa7-4369-97ab-58fc66c5ad90"
+    }
+
+]

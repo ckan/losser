@@ -1,0 +1,16 @@
+{
+  "Data Owner": {
+    "pattern": "^author$"
+  },
+  "Maintainer": {
+    "pattern": "^maintainer$"
+  },
+  "Total Views": {
+    "pattern": ["^tracking_summary$", "total"]
+  },
+  "Formats": {
+    "pattern": ["^resources$", "format"],
+    "deduplicate": true
+  }
+}
+
