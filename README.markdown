@@ -10,6 +10,14 @@
 Losser
 ======
 
+<pre><code>
+[
+  {
+    <span style="background:red;">"foo": "bar",</span>
+  }
+}
+</code></pre>
+
 A little UNIX command and Python library for lossy filter, transform, and
 export of JSON to Excel-compatible CSV.
 Created for [ckanapi-exporter](https://github.com/ckan/ckanapi-exporter).
