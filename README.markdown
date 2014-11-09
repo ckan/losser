@@ -10,13 +10,13 @@
 Losser
 ======
 
-<pre><code>
+<pre>
 [
   {
     <span style="background:red;">"foo": "bar",</span>
   }
 }
-</code></pre>
+</pre>
 
 A little UNIX command and Python library for lossy filter, transform, and
 export of JSON to Excel-compatible CSV.
