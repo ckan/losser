@@ -51,8 +51,16 @@ def _write_csv(f, table_):
     ``f`` could be an opened file, sys.stdout, or a StringIO.
 
     """
-    # We assume that each dict in the list has the same keys.
     fieldnames = table_[0].keys()
+    set_fieldname = set(table_[0].keys())
+    # go through all the fields and find all the field names
+    for row in table_:
+        set_fieldname.update(set(row.keys()))
+
+    # append the additonal fields sorted onto the end
+    additional_fields = sorted(set_fieldname - set(table_[0].keys()))
+    fieldnames += additional_fields
+
     writer = unicodecsv.DictWriter(f, fieldnames, encoding='utf-8')
     writer.writeheader()
 
