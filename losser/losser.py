@@ -1,5 +1,6 @@
 import cStringIO
 import collections
+import itertools
 import json
 import pprint
 import re
@@ -121,7 +122,13 @@ def table(dicts, columns, csv=False, pretty=False):
     for d in dicts:
         row = collections.OrderedDict()  # The row we'll return in the table.
         for column_title, column_spec in columns.items():
-            row[column_title] = query(dict_=d, **column_spec)
+            if not column_spec.get('return_multiple_columns', False):
+                row[column_title] = query(dict_=d, **column_spec)
+            else:
+                multiple_columns = query(dict_=d, **column_spec)
+                for k, v in multiple_columns.items():
+                    row[k] = v
+
         table_.append(row)
 
     if pretty:
@@ -138,7 +145,8 @@ def table(dicts, columns, csv=False, pretty=False):
 
 def query(pattern_path, dict_, max_length=None, strip=False,
           case_sensitive=False, unique=False, deduplicate=False,
-          string_transformations=None, hyperlink=False):
+          string_transformations=None, hyperlink=False,
+          return_multiple_columns=False):
     """Query the given dict with the given pattern path and return the result.
 
     The ``pattern_path`` is a either a single regular expression string or a
@@ -178,10 +186,13 @@ def query(pattern_path, dict_, max_length=None, strip=False,
 
     result = _process_object(pattern_path, dict_,
                              string_transformations=string_transformations,
-                             strip=strip, case_sensitive=case_sensitive)
+                             strip=strip, case_sensitive=case_sensitive,
+                             return_multiple_columns=return_multiple_columns)
 
     if not result:
         return None  # Empty lists finally get turned into None.
+    elif isinstance(result, dict):
+        return _flatten(result)
     elif len(result) == 1:
         return result[0]  # One-item lists just get turned into the item.
     else:
@@ -197,6 +208,18 @@ def query(pattern_path, dict_, max_length=None, strip=False,
                     new_result.append(item)
             result = new_result
         return result
+
+
+
+def _flatten(d, parent_key='', sep='_'):
+    items = []
+    for k, v in d.items():
+        new_key = parent_key + sep + k if parent_key else k
+        if isinstance(v, collections.MutableMapping):
+            items.extend(_flatten(v, new_key, sep=sep).items())
+        else:
+            items.append((new_key, v))
+    return collections.OrderedDict(items)
 
 
 def _process_object(pattern_path, object_, **kwargs):
@@ -228,9 +251,10 @@ def _process_list(pattern_path, list_, **kwargs):
     return result
 
 
-def _process_dict(pattern_path, dict_, case_sensitive=False, **kwargs):
+def _process_dict(pattern_path, dict_, case_sensitive=False,
+                  return_multiple_columns=False, **kwargs):
 
-    result = []
+    result_dict = collections.OrderedDict()
     pattern = pattern_path.pop()
 
     if case_sensitive:
@@ -241,7 +265,13 @@ def _process_dict(pattern_path, dict_, case_sensitive=False, **kwargs):
 
     for key in dict_:
         if regex.search(key):
-            result.extend(_process_object(pattern_path, dict_[key],
-                                          case_sensitive=case_sensitive,
-                                          **kwargs))
-    return result
+            result_dict[key] = _process_object(
+                list(pattern_path), dict_[key],
+                case_sensitive=case_sensitive,
+                return_multiple_columns=return_multiple_columns,
+                **kwargs
+            )
+    if not return_multiple_columns:
+        return list(itertools.chain(*result_dict.values()))
+    else:
+        return result_dict

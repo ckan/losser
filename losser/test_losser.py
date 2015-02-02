@@ -124,6 +124,23 @@ def test_sub_dict_with_multiple_matches():
     assert losser.query(pattern, d) == ["bar", "bah"]
 
 
+def test_sub_dict_multiple_matches_returns_multiple_results():
+    d = collections.OrderedDict(
+        title="my dataset",
+        extras=dict(
+            foo="bar",
+            foo_again="bah",
+        )
+    )
+    pattern = ["^extras$", "foo"]
+    nose.tools.assert_equals(
+        losser.query(pattern, d, return_multiple_columns=True),
+        collections.OrderedDict(
+            [('extras_foo', ['bar']), ('extras_foo_again', ['bah'])]
+        )
+    )
+
+
 def test_list_of_dicts():
     d = collections.OrderedDict(
         title="my dataset",
@@ -263,7 +280,7 @@ def test_append_unused_keys():
     ]
     columns = {
         "Title": dict(pattern_path="^title$"),
-        "Update Frequency": dict(pattern_path=["^extras$", "update"]),
+        "Update Frequency": dict(pattern_path=["^extras$", ".*"]),
     }
 
     table = losser.table(rows, columns, append_unused=True)
@@ -457,6 +474,115 @@ def test_returning_csv():
         'Guybrush Threepwood,"CSV, JSON"\r\n'
         'LeChuck,"XLS, XLS"\r\n'
         'Herman Toothrot,"PDF, TXT"\r\n'
+    )
+
+
+def test_returning_multiple_matches_as_extra_columns():
+    """Test table() returns additional multiple matches as appended columns"""
+    rows = [
+        {
+            "author": "Guybrush Threepwood",
+            "notes": "Test row 1",
+            "extras": {
+                "first": "first extra",
+                "second": "second extra",
+            },
+        },
+        {
+            "author": "LeChuck",
+            "notes": "Test row 2",
+            "extras": {
+                "first": "first extra",
+                "second": "second extra",
+            },
+        },
+        {
+            "author": "Herman Toothrot",
+            "notes": "Test row 3",
+            "extras": {
+                "first": "first extra",
+                "second": "second extra",
+            },
+        },
+    ]
+    columns = collections.OrderedDict()
+    columns["Author"] = dict(pattern_path="^author$")
+    columns["Extras"] = dict(pattern_path=["^extras$", ".*"],
+                             return_multiple_columns=True)
+
+    csv_string = losser.table(rows, columns, csv=True)
+
+    nose.tools.assert_equals(csv_string,
+        'Author,extras_second,extras_first\r\n'
+        'Guybrush Threepwood,second extra,first extra\r\n'
+        'LeChuck,second extra,first extra\r\n'
+        'Herman Toothrot,second extra,first extra\r\n'
+    )
+
+
+def test_returning_multiple_matches_matching_a_nested_dict():
+    """Test that patterns matching a dictionary return a nested flattened dict
+
+    in this test the pattern is [extra, .*] which matches a dict
+    """
+    return # TODO
+    rows = [
+        {
+            "author": "Guybrush Threepwood",
+            "notes": "Test row 1",
+            "extra": {
+                "first": {
+                    "nested_extra": "nested first extra"
+                },
+                "second": {
+                    "nested_extra": "nested second extra",
+                },
+            },
+        },
+    ]
+    columns = collections.OrderedDict()
+    #columns["Author"] = dict(pattern_path="^author$")
+    columns["Extras"] = dict(pattern_path=["^extra", ".*"],
+                             return_multiple_columns=True)
+
+    csv_string = losser.table(rows, columns, csv=True)
+
+    nose.tools.assert_equals(csv_string,
+        'Author,second,first\r\n'
+        'Guybrush Threepwood,second extra,first extra\r\n'
+        'LeChuck,second extra,first extra\r\n'
+        'Herman Toothrot,second extra,first extra\r\n'
+    )
+
+def test_returning_multiple_matches_matching_multiple_dicts():
+    """Test table() returns additional multiple matches as appended columns
+
+    The pattern ^extra, .* will match both "extra" and "extras"
+    """
+    rows = [
+        {
+            "author": "Guybrush",
+            "notes": "Test row 1",
+            "extra": {
+                "first": "first extra",
+                "second": "second extra",
+            },
+            "extras": {
+                "third": "first extra",
+                "fourth": "second extra",
+            },
+        },
+    ]
+    columns = collections.OrderedDict()
+    columns["Author"] = dict(pattern_path="^author$")
+    columns["Extras"] = dict(pattern_path=["^extra", ".*"],
+                             return_multiple_columns=True)
+
+    csv_string = losser.table(rows, columns, csv=True)
+
+    nose.tools.assert_equals(csv_string,
+        'Author,extra_second,extra_first,extras_fourth,extras_third\r\n'
+        'Guybrush,second extra,first extra,second extra,first extra\r\n'
     )
 
 
